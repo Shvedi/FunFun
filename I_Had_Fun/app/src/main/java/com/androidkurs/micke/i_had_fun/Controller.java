@@ -99,4 +99,13 @@ public class Controller {
         Log.d("CONTROLLER","PlaceListSize: "+placeList.size());
         placeFrag.show(main.getFragmentManager(),"Choose Loacation");
     }
+
+    public void tweetBtnPressed() {
+        placeFrag.dismiss();
+        main.enableFab(true);
+    }
+
+    public void placeFragDismissed() {
+        main.enableFab(true);
+    }
 }

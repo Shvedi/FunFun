@@ -39,11 +39,11 @@ public class GetPlacesAsync  {
                 PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
                 for(PlaceLikelihood p: likelyPlaces){
                     placeList.add(new mPlace(p.getPlace().getName().toString(),p.getPlace().getId()));
-                }/*
-                if(placeList.size()>2){
-                    placeList.remove(0);
+                }
+                if(placeList.size()>1){
+
                     placeList.remove(placeList.size()-1);
-                }*/
+                }
 
                 likelyPlaces.release();
                 controller.placeFetchComplete(placeList);

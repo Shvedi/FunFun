@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onClick(View view) {
 
-            fab.setEnabled(false);
+            enableFab(false);
             controller.actionBtnPressed();
 
         }
@@ -213,5 +213,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 return true;}
         });
+    }
+
+    public void enableFab(boolean b) {
+        fab.setEnabled(b);
     }
 }

@@ -62,6 +62,12 @@ public class PlacesFragment extends DialogFragment {
     private void initializeComponents(View v) {
 
         postTweetBtn = (Button) v.findViewById(R.id.postTweetBtn);
+        postTweetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.tweetBtnPressed();
+            }
+        });
         rView = (RecyclerView) v.findViewById(R.id.placesRecycler);
         rAdapter = new PlacesAdapter(placeList, (MainActivity) getActivity());
 
@@ -74,6 +80,9 @@ public class PlacesFragment extends DialogFragment {
     private void regListeners() {
     }
 
-
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        controller.placeFragDismissed();
+    }
 }
