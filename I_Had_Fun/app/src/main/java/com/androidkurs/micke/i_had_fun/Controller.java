@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class Controller {
     private MainActivity main;
+    TweetComposer tweetC;
     private DataFragment dataFrag;
     private PlacesFragment placeFrag;
     private PlaceDetectionClient placeDetectionClient;
@@ -30,6 +31,12 @@ public class Controller {
         initDataFrag();
         getLocationPermission();
         initFragments();
+        initTwitter();
+    }
+
+    private void initTwitter() {
+        tweetC = new TweetComposer(main);
+        tweetC.setController(this);
     }
 
     private void initPlaceDetectionClient() {
@@ -100,7 +107,12 @@ public class Controller {
         placeFrag.show(main.getFragmentManager(),"Choose Loacation");
     }
 
-    public void tweetBtnPressed() {
+    public void tweetBtnPressed(mPlace place) {
+        if(!(place == null)) {
+            String placename = place.getName();
+
+            tweetC.tweet("I had fun at " + placename + "!");
+        }
         placeFrag.dismiss();
         main.enableFab(true);
     }

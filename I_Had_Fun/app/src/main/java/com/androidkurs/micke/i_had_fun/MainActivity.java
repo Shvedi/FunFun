@@ -1,5 +1,6 @@
 package com.androidkurs.micke.i_had_fun;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
@@ -27,6 +28,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Toolbar toolbar;
     private NavigationView navView;
     private ActionBarDrawerToggle drawerToggle;
+    private TwitterAuthClient tac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,5 +221,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void enableFab(boolean b) {
         fab.setEnabled(b);
+    }
+
+    public void twitterOnActivity(TwitterAuthClient tac){
+        this.tac = tac;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the login button.
+        tac.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder> {
     private MainActivity activity;
     private ArrayList<mPlace> dataList;
+    private mPlace currentPlace;
 
     public PlacesAdapter(ArrayList<mPlace> placeList, MainActivity mainActivity) {
         this.activity = mainActivity;
@@ -28,6 +29,13 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
     public void swap(ArrayList<mPlace> placeList) {
         this.dataList = placeList;
         this.notifyDataSetChanged();
+    }
+
+    public void setPlace(mPlace place) {
+        this.currentPlace = place;
+    }
+    public mPlace getPlace(){
+        return this.currentPlace;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -70,6 +78,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
                         mPlace place = dataList.get(i);
                         place.setSelected(!place.isSelected());
 
+
                     }else{
                         dataList.get(i).setSelected(false);
                     }
@@ -82,6 +91,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
         });
         if(dataList.get(position).isSelected()){
             holder.imView.setImageDrawable(activity.getDrawable(R.drawable.check));
+            setPlace(dataList.get(position));
         }else{
             holder.imView.setImageDrawable(null);
         }
