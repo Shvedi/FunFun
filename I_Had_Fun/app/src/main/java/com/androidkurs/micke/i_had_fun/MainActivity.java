@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.User;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView navHeader;
     private Toolbar toolbar;
     private NavigationView navView;
+    private ImageView headerImage;
     private ActionBarDrawerToggle drawerToggle;
     private TwitterAuthClient tac;
 
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navView = (NavigationView)findViewById(R.id.navView);
 
         View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
-        ImageView headerImage = headerLayout.findViewById(R.id.headerImage);
+        headerImage = headerLayout.findViewById(R.id.headerImage);
         setupDrawerContent(navView);
         drawerToggle.syncState();
         navHeader = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
@@ -218,7 +222,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;}
         });
     }
-
+    public void setUserProfile(User user){
+        navHeader.setText(user.name);
+        String profileImage = user.profileImageUrl.replace("_normal", "");
+        Glide.with(getApplicationContext()).load(profileImage).apply(RequestOptions.circleCropTransform()).into(headerImage);
+    }
     public void enableFab(boolean b) {
         fab.setEnabled(b);
     }
