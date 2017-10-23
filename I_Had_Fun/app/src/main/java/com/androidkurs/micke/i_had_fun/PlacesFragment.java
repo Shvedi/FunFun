@@ -48,7 +48,7 @@ public class PlacesFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //animation();
-
+        
     }
 
     private void animation(float toX){

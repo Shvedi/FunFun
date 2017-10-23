@@ -38,7 +38,9 @@ public class GetPlacesAsync  {
             public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
                 PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
                 for(PlaceLikelihood p: likelyPlaces){
-                    placeList.add(new mPlace(p.getPlace().getName().toString(),p.getPlace().getId()));
+                    placeList.add(new mPlace(p.getPlace().getName().toString(),p.getPlace().getId(), p.getPlace().getLatLng()));
+
+
                 }
                 if(placeList.size()>1){
 

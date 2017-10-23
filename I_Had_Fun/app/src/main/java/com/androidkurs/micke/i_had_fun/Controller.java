@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class Controller {
     private MainActivity main;
-    TweetComposer tweetC;
+    private TweetComposer tweetC;
     private DataFragment dataFrag;
     private PlacesFragment placeFrag;
     private PlaceDetectionClient placeDetectionClient;
