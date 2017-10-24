@@ -46,7 +46,7 @@ public class MyLocation implements LocationListener {
 
         if(loc!=null) {
             main.setMarker(loc.getLatitude(), loc.getLongitude());
-            Toast.makeText(main,"marker set", Toast.LENGTH_SHORT).show();
+            Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
             locM.requestLocationUpdates(bestProvider,5000,0,this);
         }
         else{
