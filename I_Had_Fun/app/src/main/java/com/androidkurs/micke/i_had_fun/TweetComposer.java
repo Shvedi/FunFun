@@ -112,15 +112,15 @@ public class TweetComposer {
             }
         });
     }
-    public void tweet(String msg) {
+    public void tweet(String msg, double latitude, double longitude, String placeID) {
         TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
         StatusesService statusesService = TwitterCore.getInstance().getApiClient(session).getStatusesService();
-        Call<Tweet> update = statusesService.update(msg, null, null, null, null, null, null, null, null);
+        Call<Tweet> update = statusesService.update(msg, null, null, latitude, longitude, placeID, null, null, null);
+        Log.d("TWITTERCOMPOSER","LAT: "+ latitude);
         update.enqueue(new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
                 Toast.makeText(main,"Tweet SUCCESSFUL",Toast.LENGTH_SHORT).show();
-
             }
 
             @Override

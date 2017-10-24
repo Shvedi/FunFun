@@ -111,7 +111,7 @@ public class Controller {
         if(!(place == null)) {
             String placename = place.getName();
 
-            tweetC.tweet("I had fun at " + placename + "!");
+            tweetC.tweet("I had fun at " + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();
         main.enableFab(true);

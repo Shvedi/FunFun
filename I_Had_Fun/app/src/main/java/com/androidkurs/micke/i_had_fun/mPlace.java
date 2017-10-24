@@ -14,7 +14,8 @@ public class mPlace {
     private Bitmap bitmap = null;
     private Boolean selected = false;
     private LatLng latLong;
-    private Double Latitude = 0.0;
+    private double Latitude = 0.0;
+    private double Longitude = 0.0;
 
     public Double getLatitude() {
         return Latitude;
@@ -24,7 +25,7 @@ public class mPlace {
         return Longitude;
     }
 
-    private Double Longitude = 0.0;
+
 
     public Bitmap getBitmap() {
         return bitmap;

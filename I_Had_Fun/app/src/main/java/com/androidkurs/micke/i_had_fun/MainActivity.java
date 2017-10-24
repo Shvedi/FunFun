@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            super.onBackPressed();
             /*
             TODO!!
             FIX LOGOUT FUNCTIONS?
