@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initDrawer();
         initComponents();
         initListeners();
-        showDialog();
+        //showDialog();
 
         myLoc = new MyLocation(this);
 
@@ -300,15 +302,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Manifest.permission.ACCESS_NETWORK_STATE}, 10);
     }
 
-    public void setMarker(double latitude, double longitude) {
+    public void initPosition(double latitude, double longitude) {
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
     }
     public void showDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        DialogFragment df = new DialogFragment();
-        df.show(fm, "HEJHEJ");
-
+        if(tweetComposer.isLoggedIn()){
+        }
+        else {
+            FragmentManager fm = getSupportFragmentManager();
+            DialogFragment df = new DialogFragment();
+            df.show(fm, "HEJHEJ");
+        }
     }
 
+   public void setMarker(Double latitude, Double longitude) {
+        LatLng myLocation = new LatLng(latitude,longitude);
+        mMap.addMarker(new MarkerOptions().position(myLocation).title("Places pos"));
+    }
 }

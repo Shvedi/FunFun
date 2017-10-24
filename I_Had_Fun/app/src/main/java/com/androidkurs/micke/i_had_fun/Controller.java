@@ -21,13 +21,13 @@ public class Controller {
     private TweetComposer tweetC;
     private DataFragment dataFrag;
     private PlacesFragment placeFrag;
+    private  DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
 
 
     public Controller(MainActivity mainActivity) {
         this.main = mainActivity;
         initPlaceDetectionClient();
-
         initDataFrag();
         getLocationPermission();
         initFragments();
@@ -37,6 +37,16 @@ public class Controller {
     private void initTwitter() {
         tweetC = new TweetComposer(main);
         tweetC.setController(this);
+        main.setTweetComposer(tweetC);
+    }
+
+    public void startLogin(){
+        if(tweetC.isLoggedIn()){
+            tweetC.fetchSession();
+        }
+        else{
+            tweetC.initLogin();
+        }
     }
 
     private void initPlaceDetectionClient() {
@@ -111,7 +121,7 @@ public class Controller {
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
             String placename = place.getName();
-
+            main.setMarker(place.getLatitude(),place.getLongitude());
             tweetC.tweet("I had fun at " + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();

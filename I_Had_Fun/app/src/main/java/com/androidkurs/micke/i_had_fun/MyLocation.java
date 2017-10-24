@@ -45,7 +45,7 @@ public class MyLocation implements LocationListener {
 
 
         if(loc!=null) {
-            main.setMarker(loc.getLatitude(), loc.getLongitude());
+            main.initPosition(loc.getLatitude(), loc.getLongitude());
             Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
             locM.requestLocationUpdates(bestProvider,5000,0,this);
         }
@@ -55,7 +55,7 @@ public class MyLocation implements LocationListener {
                     Toast.makeText(main, "gps location is null, trying network", Toast.LENGTH_SHORT).show();
                     loc = locM.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     if(loc!=null){
-                        main.setMarker(loc.getLatitude(),loc.getLongitude());
+                        main.initPosition(loc.getLatitude(),loc.getLongitude());
                         locM.requestLocationUpdates("network",5000,0,this);
                     }
                     else{
@@ -66,7 +66,7 @@ public class MyLocation implements LocationListener {
                     Toast.makeText(main, "network location is null, trying gps", Toast.LENGTH_SHORT).show();
                     loc = locM.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(loc!=null){
-                        main.setMarker(loc.getLatitude(),loc.getLongitude());
+                        main.initPosition(loc.getLatitude(),loc.getLongitude());
                         locM.requestLocationUpdates("gps",5000,0,this);
                     }
                     else{
@@ -79,7 +79,7 @@ public class MyLocation implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         Toast.makeText(main,"Location updated", Toast.LENGTH_SHORT).show();
-        main.setMarker(location.getLatitude(), location.getLongitude());
+        main.initPosition(location.getLatitude(), location.getLongitude());
     }
 
     @Override

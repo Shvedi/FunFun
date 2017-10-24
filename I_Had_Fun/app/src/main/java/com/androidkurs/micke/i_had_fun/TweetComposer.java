@@ -54,15 +54,10 @@ public class TweetComposer {
                 .debug(true)
                 .build();
         Twitter.initialize(config);
-        init();
-
+        initLogin();
     }
 
-    private void init() {
-        if (TwitterCore.getInstance().getSessionManager().getActiveSession() != null) {
-            fetchSession();
-            BearerToken token = new BearerToken(this);
-        } else {
+    public void initLogin() {
             tAuthorClient = new TwitterAuthClient();
             Callback<TwitterSession> cb;
             cb = new Callback<TwitterSession>() {
@@ -82,16 +77,17 @@ public class TweetComposer {
             };
             tAuthorClient.authorize(main,cb);
             main.twitterOnActivity(tAuthorClient);
-        }
-        main.setTweetComposer(this);
+
+       // main.setTweetComposer(this);
     }
-    private void fetchSession(){
+    public void fetchSession(){
         TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
         TwitterAuthToken authToken = session.getAuthToken();
         token = authToken.token;
         secret = authToken.secret;
         screen_name = session.getUserName();
         login(session);
+        BearerToken token = new BearerToken(this);
     }
     public void login(TwitterSession session) {
         TwitterCore.getInstance().getApiClient(session).getAccountService().verifyCredentials(true, false, true).enqueue(new Callback<User>() {
@@ -149,6 +145,14 @@ public class TweetComposer {
 
     public void logOut(){
         TwitterCore.getInstance().getSessionManager().clearActiveSession();
+        main.showDialog();
+    }
+
+    public boolean isLoggedIn(){
+        if (TwitterCore.getInstance().getSessionManager().getActiveSession() != null) {
+            return true;
+        }
+        return  false;
     }
 
     public void setBearerToken(String bearerToken) {

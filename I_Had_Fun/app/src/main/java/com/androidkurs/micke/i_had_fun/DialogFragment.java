@@ -23,11 +23,9 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     private View view;
     private Controller controller;
 
-
     public DialogFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,9 +39,14 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     }
 
     public void addListenerOnButton(View view) {
-        View.OnClickListener choiceListener = new ChoiceButtonListener();
         loginbtn = (Button) view.findViewById(R.id.loginbutton);
-        loginbtn.setOnClickListener(choiceListener);
+        loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDestroyView();
+                //controller.startLogin();
+            }
+        });
     //    twitterbtn = (TwitterLoginButton) view.findViewById(R.id.twitterbutton);
     //    twitterbtn.setOnClickListener(choiceListener);
     }
@@ -55,21 +58,8 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
         String title = "Log in";
         setCancelable(false);
         getDialog().setTitle(title);
-
-    }
-    public void initiateTwitterbtn(){
-        View.OnClickListener choiceListener = new ChoiceButtonListener();
-       // twitterbtn = (TwitterLoginButton) view.findViewById(R.id.twitterbutton);
-       // twitterbtn.setOnClickListener(choiceListener);
     }
 
-    private class ChoiceButtonListener implements View.OnClickListener {
-        public void onClick(View v) {
-            if (v.getId() == R.id.loginbutton) {
-                    onDestroyView();
-            }
-        }
-    }
 
     public void setController(Controller controller){
         this.controller = controller;
