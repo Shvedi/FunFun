@@ -83,8 +83,7 @@ public class TweetComposer {
             tAuthorClient.authorize(main,cb);
             main.twitterOnActivity(tAuthorClient);
         }
-
-
+        main.setTweetComposer(this);
     }
     private void fetchSession(){
         TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
@@ -146,6 +145,10 @@ public class TweetComposer {
 
     public void getData(String bearerToken) {
         //AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="+screen_name+"&include_rts=false",bearerToken,this);
+    }
+
+    public void logOut(){
+        TwitterCore.getInstance().getSessionManager().clearActiveSession();
     }
 
     public void setBearerToken(String bearerToken) {

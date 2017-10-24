@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ImageView headerImage;
     private ActionBarDrawerToggle drawerToggle;
     private TwitterAuthClient tac;
+    private float currentX,currentY;
+    private int lastAction;
+    private TweetComposer tweetComposer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,14 +144,44 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
+                if (lastAction== MotionEvent.ACTION_BUTTON_RELEASE){
+                    enableFab(false);
+                    controller.actionBtnPressed();
+                }
+            }
+        });
 
-            enableFab(false);
-            controller.actionBtnPressed();
+        fab.setOnTouchListener(new View.OnTouchListener() {
 
-        }
-    });
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getActionMasked()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        currentX = view.getX() - event.getRawX();
+                        currentY = view.getY() - event.getRawY();
+                        lastAction = MotionEvent.ACTION_DOWN;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        view.setX(currentX + event.getRawX());
+                        view.setY(currentY + event.getRawY());
+                        lastAction = MotionEvent.ACTION_MOVE;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (lastAction == MotionEvent.ACTION_DOWN){
+                            lastAction = MotionEvent.ACTION_BUTTON_RELEASE;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+                return false;
+
+            }
+        });
+
     }
 
 
@@ -206,9 +240,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     switch (id){
                         case R.id.nav_logout:
                             drawerItemSelected = 4;
+                            tweetComposer.logOut();
+                            fab.setEnabled(false);
                             break;
-
-
                     }
                     /*
                     TODO!!!
@@ -240,5 +274,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Pass the activity result to the login button.
         tac.onActivityResult(requestCode, resultCode, data);
+    }
+    public void setTweetComposer(TweetComposer tweetComposer) {
+        this.tweetComposer = tweetComposer;
     }
 }
