@@ -1,5 +1,6 @@
 package com.androidkurs.micke.i_had_fun;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -50,16 +52,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private float currentX,currentY;
     private int lastAction;
     private TweetComposer tweetComposer;
+    private MyLocation myLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        permissions();
         initController();
         initDrawer();
         initComponents();
         initListeners();
+
+        myLoc = new MyLocation(this);
 
 
     }
@@ -197,11 +202,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        myLoc.startLocation();
     }
 
     public Controller getController() {
@@ -277,5 +278,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public void setTweetComposer(TweetComposer tweetComposer) {
         this.tweetComposer = tweetComposer;
+    }
+
+    private void permissions() {
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE}, 10);
+    }
+
+    public void setMarker(double latitude, double longitude) {
+        LatLng myLocation = new LatLng(latitude,longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
     }
 }
