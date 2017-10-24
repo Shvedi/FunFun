@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +15,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -37,6 +42,8 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
+import static java.security.AccessController.getContext;
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TweetComposer tweetComposer;
     private MyLocation myLoc;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initDrawer();
         initComponents();
         initListeners();
+        showDialog();
 
         myLoc = new MyLocation(this);
 
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             TODO!!
             FIX LOGOUT FUNCTIONS?
              */
-           // controller.logout();
+            // controller.logout();
         }
     }
 
@@ -239,21 +249,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int drawerItemSelected = 0;
                 int id = item.getItemId();
 
-                    switch (id){
-                        case R.id.nav_logout:
-                            drawerItemSelected = 4;
-                            tweetComposer.logOut();
-                            fab.setEnabled(false);
-                            break;
-                    }
+                switch (id){
+                    case R.id.nav_logout:
+                        drawerItemSelected = 4;
+                        tweetComposer.logOut();
+                        fab.setEnabled(false);
+                        showDialog();
+                        break;
+                }
                     /*
                     TODO!!!
                     LOGOUTFUNCTIONS + OTHER OPTIONS?
                      */
 
-                    //controller.setFragment(drawerItemSelected);
-                    item.setChecked(true);
-                    drawerLayout.closeDrawers();
+                //controller.setFragment(drawerItemSelected);
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
 
                 return true;}
         });
@@ -293,4 +304,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
     }
+    public void showDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment df = new DialogFragment();
+        df.show(fm, "HEJHEJ");
+
+    }
+
 }

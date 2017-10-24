@@ -77,6 +77,7 @@ public class Controller {
         }
         GetPlacesAsync getPlaces = new GetPlacesAsync(this, placeDetectionClient);
         getPlaces.fetchPlaces();
+
     }
 
     private void getLocationPermission() {
@@ -120,4 +121,8 @@ public class Controller {
     public void placeFragDismissed() {
         main.enableFab(true);
     }
+    public void showDialog(){
+        main.showDialog();
+    }
+
 }
