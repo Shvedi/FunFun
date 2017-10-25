@@ -5,6 +5,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
@@ -42,12 +43,8 @@ public class Controller {
     }
 
     public void startLogin(){
-        if(twitterActivity.isLoggedIn()){
-            twitterActivity.fetchSession();
-        }
-        else{
-           twitterActivity.initLogin();
-        }
+            String res = String.valueOf(twitterActivity.initLogin());
+            Log.d("RES INIT", res);
     }
 
     private void initPlaceDetectionClient() {
@@ -82,6 +79,8 @@ public class Controller {
 
     private void showDialogFrag(){
         if(twitterActivity.isLoggedIn()){
+            String res = String.valueOf(twitterActivity.fetchSession());
+            Log.d("RES INIT", res);
             Log.d("DialogFragment","Logged in, no need for button");
         }
         else{

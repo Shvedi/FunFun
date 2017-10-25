@@ -254,9 +254,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     case R.id.nav_logout:
                         drawerItemSelected = 4;
                         twitterActivity.logOut();
-                        fab.setEnabled(false);
                         controller.resetDialog();
-                        navView.getMenu().getItem(R.id.nav_logout).setChecked(false);
                         break;
                 }
                     /*

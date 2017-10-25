@@ -78,7 +78,6 @@ public class MyLocation implements LocationListener {
     }
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(main,"Location updated", Toast.LENGTH_SHORT).show();
         main.initPosition(location.getLatitude(), location.getLongitude());
     }
 

@@ -51,13 +51,13 @@ public class TwitterActivity {
         cb = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-               twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
                 TwitterAuthToken authToken = twitterSession.getAuthToken();
                 token = authToken.token;
                 secret = authToken.secret;
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
-                login(twitterSession);
-                initResult = true;
+                initResult = login(twitterSession);
+                //initResult = true;
             }
             @Override
             public void failure(TwitterException exception) {
@@ -70,16 +70,17 @@ public class TwitterActivity {
         main.setTwitterActivity(this);
         return loginResult;
     }
-    public void fetchSession(){
-        twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
-        TwitterAuthToken authToken = twitterSession.getAuthToken();
+    public boolean fetchSession(){
+        TwitterAuthToken authToken = getSession().getAuthToken();
         token = authToken.token;
         secret = authToken.secret;
-        screen_name = twitterSession.getUserName();
-        login(twitterSession);
+        screen_name = getSession().getUserName();
         BearerToken token = new BearerToken(this);
+        //main.setUserProfile(screen_name);
+
+        return login(getSession());
     }
-    public boolean login(TwitterSession session) {
+    public boolean login(final TwitterSession session) {
         TwitterCore.getInstance().getApiClient(session).getAccountService().verifyCredentials(true, false, true).enqueue(new Callback<User>() {
 
             @Override
