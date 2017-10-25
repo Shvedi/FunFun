@@ -24,6 +24,7 @@ public class PlacesFragment extends DialogFragment {
     private Controller controller;
     private DataFragment dataFrag;
     private ArrayList<mPlace> placeList;
+    private Button happybtn,happierbtn,veryhappybtn,happiestbtn;
 
 
     public PlacesFragment() {
@@ -69,6 +70,12 @@ public class PlacesFragment extends DialogFragment {
         rView.addItemDecoration(new ItemDecor(getActivity()));
         rView.setAdapter(rAdapter);
 
+        happybtn = (Button) v.findViewById(R.id.happybutton);
+        happierbtn = (Button) v.findViewById(R.id.happierbutton);
+        veryhappybtn = (Button) v.findViewById(R.id.veryhappybutton);
+        happiestbtn = (Button) v.findViewById(R.id.happiestbutton);
+
+
         postTweetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +87,9 @@ public class PlacesFragment extends DialogFragment {
     }
 
     private void regListeners() {
+
+
+
     }
 
     @Override
