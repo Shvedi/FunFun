@@ -1,7 +1,6 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -18,10 +17,11 @@ import java.util.ArrayList;
 
 public class Controller {
     private MainActivity main;
-    private TweetComposer tweetC;
+    private TwitterActivity twitterActivity;
+    private TweetHandler tweetHandler;
     private DataFragment dataFrag;
     private PlacesFragment placeFrag;
-    private  DialogFragment dialogFrag;
+    private DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
 
 
@@ -30,27 +30,31 @@ public class Controller {
         initPlaceDetectionClient();
         initDataFrag();
         getLocationPermission();
-        initFragments();
         initTwitter();
+        initFragments();
     }
 
     private void initTwitter() {
-        tweetC = new TweetComposer(main);
-        tweetC.setController(this);
-        main.setTweetComposer(tweetC);
+        twitterActivity = new TwitterActivity(main);
+        tweetHandler = twitterActivity.getTweetHandler();
+        twitterActivity.setController(this);
+        main.setTwitterActivity(twitterActivity);
     }
 
     public void startLogin(){
-        if(tweetC.isLoggedIn()){
-            tweetC.fetchSession();
+        if(twitterActivity.isLoggedIn()){
+            twitterActivity.fetchSession();
         }
         else{
-            tweetC.initLogin();
+           twitterActivity.initLogin();
         }
     }
 
     private void initPlaceDetectionClient() {
         this.placeDetectionClient = Places.getPlaceDetectionClient(main,null);
+    }
+    public void test(){
+        String str = "str";
     }
 
 
@@ -66,7 +70,23 @@ public class Controller {
 
     private void initFragments() {
         this.placeFrag = new PlacesFragment();
+        resetDialog();
+    }
 
+    public void resetDialog(){
+        this.dialogFrag = new DialogFragment();
+        dialogFrag.setController(this);
+        main.setDialogFrag(dialogFrag);
+        showDialogFrag();
+    }
+
+    private void showDialogFrag(){
+        if(twitterActivity.isLoggedIn()){
+            Log.d("DialogFragment","Logged in, no need for button");
+        }
+        else{
+            main.showDialog();
+        }
     }
 
     public DataFragment getDataFrag() {
@@ -121,8 +141,8 @@ public class Controller {
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
             String placename = place.getName();
-            main.setMarker(place.getLatitude(),place.getLongitude());
-            tweetC.tweet("I had fun at " + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
+            main.setMarker(place.getLatitude(),place.getLongitude(),placename);
+            tweetHandler.tweet("I had fun at " + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();
         main.enableFab(true);
@@ -131,8 +151,10 @@ public class Controller {
     public void placeFragDismissed() {
         main.enableFab(true);
     }
-    public void showDialog(){
-        main.showDialog();
-    }
 
+    public DialogFragment getNewDialogFrag() {
+        DialogFragment dialogFrag = new DialogFragment();
+        dialogFrag.setController(this);
+        return dialogFrag;
+    }
 }

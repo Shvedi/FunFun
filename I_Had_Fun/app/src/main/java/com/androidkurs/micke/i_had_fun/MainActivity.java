@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TwitterAuthClient tac;
     private float currentX,currentY;
     private int lastAction;
-    private TweetComposer tweetComposer;
+    private DialogFragment dialogFrag;
+    private TwitterActivity twitterActivity;
     private MyLocation myLoc;
 
 
@@ -74,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initDrawer();
         initComponents();
         initListeners();
-        //showDialog();
-
         myLoc = new MyLocation(this);
 
 
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private void setupDrawerContent(NavigationView navView){
+    private void setupDrawerContent(final NavigationView navView){
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
@@ -254,9 +253,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 switch (id){
                     case R.id.nav_logout:
                         drawerItemSelected = 4;
-                        tweetComposer.logOut();
+                        twitterActivity.logOut();
                         fab.setEnabled(false);
-                        showDialog();
+                        controller.resetDialog();
+                        navView.getMenu().getItem(R.id.nav_logout).setChecked(false);
                         break;
                 }
                     /*
@@ -265,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                      */
 
                 //controller.setFragment(drawerItemSelected);
-                item.setChecked(true);
                 drawerLayout.closeDrawers();
 
                 return true;}
@@ -290,9 +289,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Pass the activity result to the login button.
         tac.onActivityResult(requestCode, resultCode, data);
     }
-    public void setTweetComposer(TweetComposer tweetComposer) {
-        this.tweetComposer = tweetComposer;
-    }
 
     private void permissions() {
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{
@@ -306,18 +302,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
     }
+    public void setDialogFrag(DialogFragment dialogFrag){
+        this.dialogFrag = dialogFrag;
+    }
     public void showDialog() {
-        if(tweetComposer.isLoggedIn()){
-        }
-        else {
             FragmentManager fm = getSupportFragmentManager();
-            DialogFragment df = new DialogFragment();
-            df.show(fm, "HEJHEJ");
-        }
+            dialogFrag.show(fm, "DialogFragment");
+        //Log.v("showDialog","Showing dialog");
     }
 
-   public void setMarker(Double latitude, Double longitude) {
+   public void setMarker(Double latitude, Double longitude, String placename) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(myLocation).title("Places pos"));
+        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename));
+    }
+
+    public void setTwitterActivity(TwitterActivity twitterActivity) {
+        this.twitterActivity = twitterActivity;
     }
 }

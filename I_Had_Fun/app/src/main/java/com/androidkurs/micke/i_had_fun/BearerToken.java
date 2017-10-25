@@ -30,11 +30,11 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
     private String consumerSecret = "6cQemVy1Kyk8Uswh0jLY80xDyiswm30MgzoHV5o8RnMBxPS7ZE";
     public String bearerToken;
     public String tokenType;
-    private TweetComposer tweetComposer;
+    private TwitterActivity twitterActivity;
     private String tokenUrl = "https://api.twitter.com/oauth2/token";
 
-    public BearerToken(TweetComposer tweetComposer) {
-        this.tweetComposer = tweetComposer;
+    public BearerToken(TwitterActivity twitterActivity) {
+        this.twitterActivity = twitterActivity;
         execute();
     }
 
@@ -116,8 +116,8 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
     protected void onPostExecute(Void result) {
         finished = true;
         if (bearerToken!=null){
-            tweetComposer.getData(bearerToken);
-            tweetComposer.setBearerToken(this.bearerToken);
+            twitterActivity.getData(bearerToken);
+            twitterActivity.setBearerToken(this.bearerToken);
         }
     }
 }

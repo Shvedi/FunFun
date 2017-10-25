@@ -20,12 +20,12 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     String returnEntry;
     public boolean finished;
 
-    private TweetComposer tweetComposer;
+    private TweetHandler tweetHandler;
     private String urlGet,bearerToken;
 
 
-    public AsyncTaskGetTimeLine(String url, String bearerToken, TweetComposer tweetComposer) {
-        this.tweetComposer = tweetComposer;
+    public AsyncTaskGetTimeLine(String url, String bearerToken, TweetHandler tweetHandler) {
+        this.tweetHandler = tweetHandler;
         this.urlGet=url;
         this.bearerToken=bearerToken;
         execute();
@@ -57,7 +57,7 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
             while ((inputLine = bufferedReader.readLine()) != null) {
                 response.append(inputLine);
             }
-            tweetComposer.parseTimeLineJsonResult(response.toString());
+            tweetHandler.parseTimeLineJsonResult(response.toString());
 
         } catch (MalformedURLException e) {
             try {
@@ -78,7 +78,7 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         finished = true;
-        //tweetComposer.setText();
+        //tweetHandler.setText();
     }
 
 }
