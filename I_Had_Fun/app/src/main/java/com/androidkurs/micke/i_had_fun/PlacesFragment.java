@@ -64,7 +64,6 @@ public class PlacesFragment extends DialogFragment {
         postTweetBtn = (Button) v.findViewById(R.id.postTweetBtn);
         rView = (RecyclerView) v.findViewById(R.id.placesRecycler);
         rAdapter = new PlacesAdapter(placeList, (MainActivity) getActivity());
-
         LinearLayoutManager lLM = new LinearLayoutManager(getContext());
         rView.setLayoutManager(lLM);
         rView.addItemDecoration(new ItemDecor(getActivity()));
