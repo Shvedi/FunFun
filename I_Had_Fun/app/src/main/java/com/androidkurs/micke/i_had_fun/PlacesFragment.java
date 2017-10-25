@@ -25,6 +25,7 @@ public class PlacesFragment extends DialogFragment {
     private DataFragment dataFrag;
     private ArrayList<mPlace> placeList;
     private Button happybtn,happierbtn,veryhappybtn,happiestbtn;
+    private String fun;
 
 
     public PlacesFragment() {
@@ -49,7 +50,7 @@ public class PlacesFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //animation();
-        
+
     }
 
     private void animation(float toX){
@@ -61,7 +62,7 @@ public class PlacesFragment extends DialogFragment {
     }
 
     private void initializeComponents(View v) {
-
+        View.OnClickListener choiceListener = new ChoiceButtonListener();
         postTweetBtn = (Button) v.findViewById(R.id.postTweetBtn);
         rView = (RecyclerView) v.findViewById(R.id.placesRecycler);
         rAdapter = new PlacesAdapter(placeList, (MainActivity) getActivity());
@@ -70,10 +71,15 @@ public class PlacesFragment extends DialogFragment {
         rView.addItemDecoration(new ItemDecor(getActivity()));
         rView.setAdapter(rAdapter);
 
+
         happybtn = (Button) v.findViewById(R.id.happybutton);
         happierbtn = (Button) v.findViewById(R.id.happierbutton);
         veryhappybtn = (Button) v.findViewById(R.id.veryhappybutton);
         happiestbtn = (Button) v.findViewById(R.id.happiestbutton);
+        happybtn.setOnClickListener(choiceListener);
+        happierbtn.setOnClickListener(choiceListener);
+        veryhappybtn.setOnClickListener(choiceListener);
+        happiestbtn.setOnClickListener(choiceListener);
 
 
         postTweetBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,14 +89,34 @@ public class PlacesFragment extends DialogFragment {
                 rAdapter.setPlace(null);
             }
         });
-
     }
 
     private void regListeners() {
-
-
-
     }
+
+
+    private class ChoiceButtonListener implements View.OnClickListener {
+
+        public void onClick(View v) {
+            if (v.getId() == R.id.happybutton) {
+                fun = "I had fun at";
+                controller.setFunString(fun);
+            }
+            else if(v.getId() == R.id.happierbutton) {
+                fun = "I had very fun at ";
+                controller.setFunString(fun);
+            }
+            else if(v.getId() == R.id.veryhappybutton) {
+                fun = "I had a blast at ";
+                controller.setFunString(fun);
+            }
+            else if(v.getId() == R.id.happiestbutton) {
+                fun = "It was amazing at ";
+                controller.setFunString(fun);
+            }
+        }
+    }
+
 
     @Override
     public void onDetach() {

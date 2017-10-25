@@ -47,13 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/emoticon_sad" />
+                android:background="@drawable/happy1" />
 
             <Button
                 android:id="@+id/happierbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/emoticon_sad"
+                android:background="@drawable/happy2"
                 android:layout_weight="1"
                 />
 
@@ -62,7 +62,7 @@
                 android:id="@+id/veryhappybutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/emoticon_happy"
+                android:background="@drawable/happy3"
                 android:layout_weight="1"
                 />
 
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/emoticon_happy"
+                android:background="@drawable/happy4"
                 />
 
 

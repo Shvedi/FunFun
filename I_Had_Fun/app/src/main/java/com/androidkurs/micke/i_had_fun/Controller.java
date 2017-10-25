@@ -24,6 +24,7 @@ public class Controller {
     private PlacesFragment placeFrag;
     private DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
+    private String fun;
 
 
     public Controller(MainActivity mainActivity) {
@@ -141,7 +142,7 @@ public class Controller {
         if(!(place == null)) {
             String placename = place.getName();
             main.setMarker(place.getLatitude(),place.getLongitude(),placename);
-            tweetHandler.tweet("I had fun at " + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
+            tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();
         main.enableFab(true);
@@ -155,5 +156,8 @@ public class Controller {
         DialogFragment dialogFrag = new DialogFragment();
         dialogFrag.setController(this);
         return dialogFrag;
+    }
+    public void setFunString(String fun){
+        this.fun = fun;
     }
 }
