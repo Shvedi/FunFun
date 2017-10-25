@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -28,8 +29,8 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
 
     private String consumerKey = "PpHjVX0LbKaJ4ztrYxTuO2R6y";
     private String consumerSecret = "6cQemVy1Kyk8Uswh0jLY80xDyiswm30MgzoHV5o8RnMBxPS7ZE";
-    public String bearerToken;
-    public String tokenType;
+    private String bearerToken;
+    private String tokenType;
     private TwitterActivity twitterActivity;
     private String tokenUrl = "https://api.twitter.com/oauth2/token";
 
@@ -41,11 +42,9 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
     public void setJSONresults(String response) {
         try {
             JSONObject jsonObj = new JSONObject(response);
-            bearerToken = jsonObj.getString("access_token");
-            tokenType = jsonObj.getString("token_type");
-
+            bearerToken = jsonObj.getString("token_type")+" "+jsonObj.getString("access_token");
         } catch (JSONException ex) {
-
+            Log.v("setJSONresults","Failed to put result!");
         }
     }
 
@@ -101,7 +100,7 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
                 }
                 setJSONresults(response.toString());
             } catch (IOException ex) {
-
+                Log.v("BearerToken","Failed to fetch BearerToken");
             } finally {
                 if (conn != null) {
                     conn.disconnect();
@@ -116,8 +115,7 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
     protected void onPostExecute(Void result) {
         finished = true;
         if (bearerToken!=null){
-            twitterActivity.getData(bearerToken);
-            twitterActivity.setBearerToken(this.bearerToken);
+            twitterActivity.fetchAllFunPosition(bearerToken);
         }
     }
 }
