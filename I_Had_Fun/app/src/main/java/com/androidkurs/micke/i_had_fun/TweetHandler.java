@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.services.StatusesService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -48,6 +49,7 @@ public class TweetHandler {
     public TweetHandler(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
     }
+
     public void tweet(String msg, double latitude, double longitude, String placeID) {
         TwitterSession session = twitterActivity.getSession();
         StatusesService statusesService = TwitterCore.getInstance().getApiClient(session).getStatusesService();
@@ -68,14 +70,29 @@ public class TweetHandler {
 
     public void parseTimeLineJsonResult(String response){
         String text = "";
+        Double latitude;
+        Double longitude;
         try {
             JSONArray arr = new JSONArray(response);
+            JSONArray coordArr;
+            JSONObject obj;
             for (int i=0; i < arr.length(); i++){
-                text += String.valueOf(i)+": "+arr.getJSONObject(i).getString("text")+"\n";
+                obj = arr.getJSONObject(i);
+                //latitude = Double.parseDouble(obj.getString("coordinates"));
+                text = obj.getString("text");
+                text = text.substring(text.indexOf("at")+3,text.length());
+                obj = obj.getJSONObject("coordinates");
+                coordArr = obj.getJSONArray("coordinates");
+                longitude = coordArr.getDouble(0);
+                latitude = coordArr.getDouble(1);
+                twitterActivity.main.setMarker(latitude,longitude,text);
             }
+            //Placera alla objekten på kartan?!?
+            // Nuvarande lösning sätter markers direkt inom forloopen vi får diskutera vår slutgiltiga lösning senare!
+            // alt 1: Lägga alla tweets i placeobjekt, sedan lägga ut markers?
+            // alt 2: Lägga markers direkt på kartan inom forloopen?
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //timelineText = text;
     }
 }

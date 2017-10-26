@@ -17,11 +17,11 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
-    String returnEntry;
     public boolean finished;
 
     private TweetHandler tweetHandler;
     private String urlGet,bearerToken;
+    private StringBuilder response;
 
 
     public AsyncTaskGetTimeLine(String url, String bearerToken, TweetHandler tweetHandler) {
@@ -40,7 +40,7 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
             URL url = new URL(urlGet);
             connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setRequestProperty("Authorization", ("bearer "+bearerToken));
+            connection.setRequestProperty("Authorization", (bearerToken));
             connection.setRequestMethod("GET");
             connection.setDoInput(true);
             connection.setUseCaches(false);
@@ -52,16 +52,15 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
             InputStream inputStream = connection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String inputLine = "";
-            StringBuilder response = new StringBuilder();
+            response = new StringBuilder();
 
             while ((inputLine = bufferedReader.readLine()) != null) {
                 response.append(inputLine);
             }
-            tweetHandler.parseTimeLineJsonResult(response.toString());
 
         } catch (MalformedURLException e) {
             try {
-                throw new IOException("Invalid endpoint URL specified.", e);
+                throw new IOException("Invalid endpoint", e);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -78,7 +77,7 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         finished = true;
-        //tweetHandler.setText();
+        tweetHandler.parseTimeLineJsonResult(response.toString());
     }
 
 }

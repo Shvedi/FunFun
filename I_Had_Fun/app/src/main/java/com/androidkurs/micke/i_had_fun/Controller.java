@@ -160,4 +160,5 @@ public class Controller {
     public void setFunString(String fun){
         this.fun = fun;
     }
+
 }

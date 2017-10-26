@@ -32,6 +32,7 @@ public class TwitterActivity {
     private String secret;
     private String screen_name;
     private String bearerToken;
+    private String baseUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
 
     public TwitterActivity(MainActivity main){
         this.main = main;
@@ -88,9 +89,6 @@ public class TwitterActivity {
                 if (result.response.isSuccessful()){
                     User user = result.data;
                     main.setUserProfile(user);
-                    //textView.setText(user.name);
-                    //String profileImage = user.profileImageUrl.replace("_normal", "");
-                    //Glide.with(getApplicationContext()).load(profileImage).into(iv);
                     loginResult = true;
                 }
             }
@@ -111,15 +109,13 @@ public class TwitterActivity {
         }
         return  false;
     }
-    public void getData(String bearerToken) {
-        //AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="+screen_name+"&include_rts=false",bearerToken,this);
+    public void fetchAllFunPosition(String bearerToken){
+        this.bearerToken = bearerToken;
+        AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine(baseUrl+screen_name+"&include_rts=false",bearerToken,getTweetHandler());
     }
 
     public TwitterSession getSession(){
         return (this.twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession());
-    }
-    public void setBearerToken(String bearerToken) {
-        this.bearerToken = bearerToken;
     }
 
     public void setController(Controller controller) {
