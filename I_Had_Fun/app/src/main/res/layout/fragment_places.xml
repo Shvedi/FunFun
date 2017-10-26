@@ -1,14 +1,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
     tools:context="com.androidkurs.micke.i_had_fun.PlacesFragment">
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
 
         <!-- TODO: Update blank fragment layout -->
@@ -35,57 +35,65 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/placesRecycler"
-            android:layout_marginTop="29dp"
-            android:padding="16dp">
+            android:gravity="center_horizontal"
+            android:layout_marginTop="29dp">
 
             <Button
                 android:id="@+id/happybutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="32dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="25dp"
+                android:layout_toStartOf="@+id/happierbutton"
                 android:layout_weight="1"
                 android:background="@drawable/happy1" />
 
             <Button
                 android:id="@+id/happierbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="32dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="25dp"
+                android:layout_toStartOf="@+id/veryhappybutton"
                 android:layout_weight="1"
                 android:background="@drawable/happy2" />
 
 
             <Button
                 android:id="@+id/veryhappybutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="32dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="25dp"
+                android:layout_toStartOf="@+id/happiestbutton"
                 android:layout_weight="1"
                 android:background="@drawable/happy3" />
 
             <Button
                 android:id="@+id/happiestbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
                 android:layout_weight="1"
                 android:background="@drawable/happy4" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/postTweetBtn"
             android:layout_width="160dp"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="36dp"
-            android:text="Tweet it!" />
+            android:text="Tweet it!"
+            android:layout_marginTop="32dp"
+            android:layout_below="@+id/relativeLayout"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>

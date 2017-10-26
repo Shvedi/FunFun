@@ -3,6 +3,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.animation.ObjectAnimator;
 import android.app.DialogFragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ public class PlacesFragment extends DialogFragment {
     private ArrayList<mPlace> placeList;
     private Button happybtn,happierbtn,veryhappybtn,happiestbtn;
     private String fun;
+    private boolean isHighlighted;
 
 
     public PlacesFragment() {
@@ -41,6 +44,7 @@ public class PlacesFragment extends DialogFragment {
         this.controller =(Controller)((MainActivity) getActivity()).getController();
         this.dataFrag = controller.getDataFrag();
         this.placeList = dataFrag.getPlaceList();
+        isHighlighted = false;
         initializeComponents(v);
         regListeners();
         return v;
@@ -85,8 +89,15 @@ public class PlacesFragment extends DialogFragment {
         postTweetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.tweetBtnPressed(rAdapter.getPlace());
-                rAdapter.setPlace(null);
+                if(isHighlighted&&rAdapter.getPlace()!=null) {
+                    controller.tweetBtnPressed(rAdapter.getPlace());
+                    isHighlighted = false;
+                    rAdapter.setPlace(null);
+                }
+                else{
+                    Toast.makeText(getActivity(),"Choose happiness-level and/or a place!",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -99,25 +110,53 @@ public class PlacesFragment extends DialogFragment {
 
         public void onClick(View v) {
             if (v.getId() == R.id.happybutton) {
-                fun = "I had fun at";
+                fun = "I had fun at ";
                 controller.setFunString(fun);
+                highlightButton(1);
             }
             else if(v.getId() == R.id.happierbutton) {
                 fun = "I had very fun at ";
                 controller.setFunString(fun);
+                highlightButton(2);
             }
             else if(v.getId() == R.id.veryhappybutton) {
                 fun = "I had a blast at ";
                 controller.setFunString(fun);
+                highlightButton(3);
             }
             else if(v.getId() == R.id.happiestbutton) {
                 fun = "It was amazing at ";
                 controller.setFunString(fun);
+                highlightButton(4);
             }
         }
     }
 
+    private void highlightButton(int i) {
+        isHighlighted = true;
+        happierbtn.setElevation(50);
+        happybtn.setBackground(getResources().getDrawable(R.drawable.happy1));
+        happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2));
+        veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3));
+        happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4));
+        switch (i){
+            case 1:
+                happybtn.setBackground(getResources().getDrawable(R.drawable.happy1highlight));
+                break;
+            case 2:
+                happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2highlight));
+                break;
+            case 3:
+                veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3highlight));
+                break;
+            case 4:
+                happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4highlight));
+        }
+    }
 
+    public boolean isHighlighted(){
+        return isHighlighted;
+    }
     @Override
     public void onDetach() {
         super.onDetach();

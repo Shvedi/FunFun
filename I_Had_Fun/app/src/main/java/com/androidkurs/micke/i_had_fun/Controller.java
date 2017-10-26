@@ -141,7 +141,7 @@ public class Controller {
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
             String placename = place.getName();
-            main.setMarker(place.getLatitude(),place.getLongitude(),placename);
+            main.setMarker(place.getLatitude(),place.getLongitude(),placename,"Date");
             tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();

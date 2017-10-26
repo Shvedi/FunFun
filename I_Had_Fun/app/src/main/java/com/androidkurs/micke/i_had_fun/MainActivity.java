@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -24,11 +26,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +42,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -309,9 +314,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Log.v("showDialog","Showing dialog");
     }
 
-   public void setMarker(Double latitude, Double longitude, String placename) {
+   public void setMarker(Double latitude, Double longitude, String placename, String date) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename));
+        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date));
+       mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+           @Override
+           public View getInfoWindow(Marker arg0) {
+               return null;
+           }
+
+           @Override
+           public View getInfoContents(Marker marker) {
+
+               LinearLayout info = new LinearLayout(MainActivity.this);
+               info.setOrientation(LinearLayout.VERTICAL);
+
+               TextView title = new TextView(MainActivity.this);
+               title.setTextColor(Color.BLACK);
+               title.setGravity(Gravity.CENTER);
+               title.setTypeface(null, Typeface.BOLD);
+               title.setText(marker.getTitle());
+
+               TextView snippet = new TextView(MainActivity.this);
+               snippet.setTextColor(Color.GRAY);
+               snippet.setText(marker.getSnippet());
+
+               info.addView(title);
+               info.addView(snippet);
+               info.removeViewAt(info.getChildCount()-1);
+               return info;
+           }
+       });
     }
 
     public void setTwitterActivity(TwitterActivity twitterActivity) {

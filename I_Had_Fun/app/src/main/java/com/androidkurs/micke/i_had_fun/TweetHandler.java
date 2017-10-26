@@ -70,6 +70,7 @@ public class TweetHandler {
 
     public void parseTimeLineJsonResult(String response){
         String text = "";
+        String date = "";
         Double latitude;
         Double longitude;
         try {
@@ -80,12 +81,14 @@ public class TweetHandler {
                 obj = arr.getJSONObject(i);
                 //latitude = Double.parseDouble(obj.getString("coordinates"));
                 text = obj.getString("text");
-                text = text.substring(text.indexOf("at")+3,text.length());
+                text = text.substring(text.indexOf("at")+3 ,text.length());
+                date = obj.getString("created_at");
+                date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
                 obj = obj.getJSONObject("coordinates");
                 coordArr = obj.getJSONArray("coordinates");
                 longitude = coordArr.getDouble(0);
                 latitude = coordArr.getDouble(1);
-                twitterActivity.main.setMarker(latitude,longitude,text);
+                twitterActivity.main.setMarker(latitude,longitude,text, date);
             }
             //Placera alla objekten på kartan?!?
             // Nuvarande lösning sätter markers direkt inom forloopen vi får diskutera vår slutgiltiga lösning senare!
