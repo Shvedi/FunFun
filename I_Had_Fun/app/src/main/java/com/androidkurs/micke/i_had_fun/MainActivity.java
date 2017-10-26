@@ -41,6 +41,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DialogFragment dialogFrag;
     private TwitterActivity twitterActivity;
     private MyLocation myLoc;
+    private int happy;
+
 
 
 
@@ -309,11 +312,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.dialogFrag = dialogFrag;
     }
     public void showDialog() {
-            FragmentManager fm = getSupportFragmentManager();
-            dialogFrag.show(fm, "DialogFragment");
+        FragmentManager fm = getSupportFragmentManager();
+        dialogFrag.show(fm, "DialogFragment");
         //Log.v("showDialog","Showing dialog");
     }
 
+<<<<<<< HEAD
    public void setMarker(Double latitude, Double longitude, String placename, String date) {
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date));
@@ -346,9 +350,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                return info;
            }
        });
+=======
+    public void setMarker(Double latitude, Double longitude, String placename) {
+        LatLng myLocation = new LatLng(latitude,longitude);
+
+        if(happy==1){
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(placename).icon(BitmapDescriptorFactory.fromResource(R.drawable.happymarker1)));
+        }
+        else if(happy==2){
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(placename).icon(BitmapDescriptorFactory.fromResource(R.drawable.happymarker2)));
+        }
+        else if(happy==3){
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(placename).icon(BitmapDescriptorFactory.fromResource(R.drawable.happymarker3)));
+        }
+        else if(happy==4){
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(placename).icon(BitmapDescriptorFactory.fromResource(R.drawable.happymarker4)));
+        }
+
+
+        //mMap.addMarker(new MarkerOptions().position(myLocation).title(placename));
+>>>>>>> Markers
     }
 
     public void setTwitterActivity(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
+    }
+    public void setHappy(int happy){
+        this.happy = happy;
     }
 }

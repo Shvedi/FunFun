@@ -25,6 +25,7 @@ public class Controller {
     private DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
     private String fun;
+    private int happy;
 
 
     public Controller(MainActivity mainActivity) {
@@ -159,6 +160,9 @@ public class Controller {
     }
     public void setFunString(String fun){
         this.fun = fun;
+    }
+    public void setHappy(int happy){
+        main.setHappy(happy);
     }
 
 }

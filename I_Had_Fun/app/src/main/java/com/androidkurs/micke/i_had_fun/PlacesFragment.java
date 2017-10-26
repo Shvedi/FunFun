@@ -28,7 +28,11 @@ public class PlacesFragment extends DialogFragment {
     private ArrayList<mPlace> placeList;
     private Button happybtn,happierbtn,veryhappybtn,happiestbtn;
     private String fun;
+<<<<<<< HEAD
     private boolean isHighlighted;
+=======
+    int happy;
+>>>>>>> Markers
 
 
     public PlacesFragment() {
@@ -111,23 +115,46 @@ public class PlacesFragment extends DialogFragment {
         public void onClick(View v) {
             if (v.getId() == R.id.happybutton) {
                 fun = "I had fun at ";
+<<<<<<< HEAD
                 controller.setFunString(fun);
                 highlightButton(1);
+=======
+                happy = 1;
+                controller.setFunString(fun);
+                controller.setHappy(1);
+>>>>>>> Markers
             }
             else if(v.getId() == R.id.happierbutton) {
                 fun = "I had very fun at ";
+                happy = 2;
                 controller.setFunString(fun);
+<<<<<<< HEAD
                 highlightButton(2);
+=======
+                controller.setHappy(2);
+
+>>>>>>> Markers
             }
             else if(v.getId() == R.id.veryhappybutton) {
                 fun = "I had a blast at ";
+                happy = 3;
                 controller.setFunString(fun);
+<<<<<<< HEAD
                 highlightButton(3);
+=======
+                controller.setHappy(3);
+
+>>>>>>> Markers
             }
             else if(v.getId() == R.id.happiestbutton) {
                 fun = "It was amazing at ";
+                happy = 4;
                 controller.setFunString(fun);
+<<<<<<< HEAD
                 highlightButton(4);
+=======
+                controller.setHappy(4);
+>>>>>>> Markers
             }
         }
     }
