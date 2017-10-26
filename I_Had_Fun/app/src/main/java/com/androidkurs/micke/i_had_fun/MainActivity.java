@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Criteria;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -318,9 +320,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-   public void setMarker(Double latitude, Double longitude, String placename, String date) {
+   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date));
+        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit));
        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
            @Override
@@ -351,10 +353,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
            }
        });}
 
-    /*
+/**
     public void setMarker(Double latitude, Double longitude, String placename) {
         LatLng myLocation = new LatLng(latitude,longitude);
-
         if(happy==1){
             mMap.addMarker(new MarkerOptions().position(myLocation).title(placename).icon(BitmapDescriptorFactory.fromResource(R.drawable.happymarker1)));
         }
@@ -372,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //mMap.addMarker(new MarkerOptions().position(myLocation).title(placename));
 
     }
-    */
+**/
     public void setTwitterActivity(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
     }

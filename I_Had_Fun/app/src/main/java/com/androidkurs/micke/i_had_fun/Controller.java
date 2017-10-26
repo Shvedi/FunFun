@@ -10,7 +10,10 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by hello on 2017-10-20.
@@ -25,6 +28,7 @@ public class Controller {
     private DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
     private String fun;
+    private String[] months = {"Jan","Feb","Mar","Apr","Maj","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
     private int happy;
 
 
@@ -142,7 +146,7 @@ public class Controller {
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
             String placename = place.getName();
-            main.setMarker(place.getLatitude(),place.getLongitude(),placename,"Date");
+            main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun));
             tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         placeFrag.dismiss();
@@ -165,4 +169,25 @@ public class Controller {
         main.setHappy(happy);
     }
 
+    private String newDate() {
+        String DATE_FORMAT_NOW = "dd-MM-yyyy";
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        String stringDate = sdf.format(date );
+        try {
+            Date date2 = sdf.parse(stringDate);
+        } catch(ParseException e){
+            //Exception handling
+        } catch(Exception e){
+            //handle exception
+        }
+        stringDate = translateMonth(stringDate);
+        return stringDate;
+    }
+
+    public String translateMonth(String date){
+        int month = Integer.parseInt(date.substring(3,5));
+        return date.substring(0,3) + months[month-1] + date.substring(5,date.length());
+
+    }
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.OAuthSigning;
@@ -45,6 +47,7 @@ public class TweetHandler {
     private String secret;
     private String screen_name;
     private String bearerToken;
+    BitmapDescriptor bitDesc;
 
     public TweetHandler(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
@@ -81,6 +84,7 @@ public class TweetHandler {
                 obj = arr.getJSONObject(i);
                 //latitude = Double.parseDouble(obj.getString("coordinates"));
                 text = obj.getString("text");
+                bitDesc = translateHappiness(text);
                 text = text.substring(text.indexOf("at")+3 ,text.length());
                 date = obj.getString("created_at");
                 date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
@@ -88,7 +92,7 @@ public class TweetHandler {
                 coordArr = obj.getJSONArray("coordinates");
                 longitude = coordArr.getDouble(0);
                 latitude = coordArr.getDouble(1);
-                twitterActivity.main.setMarker(latitude,longitude,text, date);
+                twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
             }
             //Placera alla objekten på kartan?!?
             // Nuvarande lösning sätter markers direkt inom forloopen vi får diskutera vår slutgiltiga lösning senare!
@@ -97,5 +101,25 @@ public class TweetHandler {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public BitmapDescriptor translateHappiness(String text) {
+        BitmapDescriptor bit;
+        if(text.contains("had fun")){
+            bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker1);
+        }
+        else if(text.contains("very fun")){
+            bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker2);
+        }
+        else if(text.contains("blast")){
+            bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker3);
+        }
+        else if(text.contains("amazing")){
+            bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker4);
+        }
+        else{
+            return null;
+        }
+        return bit;
     }
 }

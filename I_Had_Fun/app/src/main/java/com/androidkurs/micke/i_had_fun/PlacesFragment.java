@@ -159,29 +159,55 @@ public class PlacesFragment extends DialogFragment {
     }
 
     private void highlightButton(int i) {
-        isHighlighted = true;
         happierbtn.setElevation(50);
-        happybtn.setBackground(getResources().getDrawable(R.drawable.happy1));
-        happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2));
-        veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3));
-        happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4));
+        resetHighlight();
         switch (i){
             case 1:
+                if(isHighlighted){
+                    resetHighlight();
+                    isHighlighted = false;
+                    break;
+                }
                 happybtn.setBackground(getResources().getDrawable(R.drawable.happy1highlight));
+                isHighlighted = true;
                 break;
             case 2:
+                if(isHighlighted){
+                    resetHighlight();
+                    isHighlighted = false;
+                    break;
+                }
                 happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2highlight));
+                isHighlighted = true;
                 break;
             case 3:
+                if(isHighlighted){
+                    resetHighlight();
+                    isHighlighted = false;
+                    break;
+                }
                 veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3highlight));
+                isHighlighted = true;
                 break;
             case 4:
+                if(isHighlighted){
+                    resetHighlight();
+                    isHighlighted = false;
+                    break;
+                }
                 happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4highlight));
+                isHighlighted = true;
         }
     }
 
     public boolean isHighlighted(){
         return isHighlighted;
+    }
+    private void resetHighlight(){
+        happybtn.setBackground(getResources().getDrawable(R.drawable.happy1));
+        happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2));
+        veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3));
+        happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4));
     }
     @Override
     public void onDetach() {
