@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Log.v("showDialog","Showing dialog");
     }
 
-<<<<<<< HEAD
+
    public void setMarker(Double latitude, Double longitude, String placename, String date) {
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date));
@@ -349,8 +349,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                info.removeViewAt(info.getChildCount()-1);
                return info;
            }
-       });
-=======
+       });}
+
+    /*
     public void setMarker(Double latitude, Double longitude, String placename) {
         LatLng myLocation = new LatLng(latitude,longitude);
 
@@ -369,9 +370,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         //mMap.addMarker(new MarkerOptions().position(myLocation).title(placename));
->>>>>>> Markers
-    }
 
+    }
+    */
     public void setTwitterActivity(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
     }
