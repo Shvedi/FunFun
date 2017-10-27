@@ -1,14 +1,17 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.Marker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +30,7 @@ public class Controller {
     private PlacesFragment placeFrag;
     private DialogFragment dialogFrag;
     private PlaceDetectionClient placeDetectionClient;
+    private GeoDataClient geoClient;
     private String fun;
     private String[] months = {"Jan","Feb","Mar","Apr","Maj","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
     private int happy;
@@ -55,6 +59,7 @@ public class Controller {
 
     private void initPlaceDetectionClient() {
         this.placeDetectionClient = Places.getPlaceDetectionClient(main,null);
+        this.geoClient = Places.getGeoDataClient(main,null);
     }
     public void test(){
         String str = "str";
@@ -164,7 +169,7 @@ public class Controller {
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
             String placename = place.getName();
-            main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun));
+            main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun),place.getId());
             tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
         dataFrag.placeFragShowing(false);
@@ -227,5 +232,22 @@ public class Controller {
 
     public boolean placeFragShowing() {
         return dataFrag.getplaceFragShowing();
+    }
+
+    public void markerInfoClicked(Marker marker) {
+        GetPhotosAsync getPhoto = new GetPhotosAsync(this,geoClient,placeDetectionClient,dataFrag.getFromTweetsMap(marker.getSnippet()));
+        getPhoto.fetchPlacePhoto();
+    }
+
+    public void PhotoFetched(mPlace place) {
+        dataFrag.setPlaceToDisplay(place);
+
+        new PlaceInformationSheet().show(main.getSupportFragmentManager(),"bottom");
+
+    }
+
+    public void updateSheetContent(PlaceInformationSheet placeInformationSheet) {
+        placeInformationSheet.setContent(dataFrag.getPlaceToDisplay());
+
     }
 }

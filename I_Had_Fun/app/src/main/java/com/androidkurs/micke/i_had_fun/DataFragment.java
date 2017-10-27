@@ -20,7 +20,24 @@ public class DataFragment extends Fragment {
     private HashMap<String, Bitmap> placeMap = new HashMap<>();
     private boolean locationPermissionGranted=false;
     private boolean placeFragShowing = false;
+    private HashMap<String, mPlace> tweetsMap = new HashMap<>();
+    private mPlace placeToDisplay;
 
+    public void addToTweetsMap(String key, mPlace value){
+        tweetsMap.put(key,value);
+    }
+
+    public mPlace getFromTweetsMap(String key){
+        return tweetsMap.get(key);
+    }
+
+    public HashMap<String, mPlace> getTweetsMap() {
+        return tweetsMap;
+    }
+
+    public void setTweetsMap(HashMap<String, mPlace> tweetsMap) {
+        this.tweetsMap = tweetsMap;
+    }
 
     public boolean isLocationPermissionGranted() {
         return locationPermissionGranted;
@@ -70,5 +87,13 @@ public class DataFragment extends Fragment {
 
     public boolean getplaceFragShowing() {
         return placeFragShowing;
+    }
+
+    public void setPlaceToDisplay(mPlace placeToDisplay) {
+        this.placeToDisplay = placeToDisplay;
+    }
+
+    public mPlace getPlaceToDisplay() {
+        return this.placeToDisplay;
     }
 }

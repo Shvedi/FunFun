@@ -40,7 +40,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
-        private ImageView imView;
+     //   private ImageView imView;
         private FrameLayout cardView;
         private FrameLayout cardFrame;
 
@@ -49,7 +49,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
 
         public MyViewHolder(View v) {
             super(v);
-            imView = (ImageView)v.findViewById(R.id.imView);
+          //  imView = (ImageView)v.findViewById(R.id.imView);
             name = (TextView)v.findViewById(R.id.placeName);
             cardView = (FrameLayout)v.findViewById(R.id.placeCard);
 
@@ -69,7 +69,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.cardView.setBackgroundColor(activity.getResources().getColor(R.color.transparent,null));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
                     if(i==position){
                         mPlace place = dataList.get(i);
                         place.setSelected(!place.isSelected());
+                        if(place.isSelected()){
+
+                        }else{
+
+                        }
 
 
                     }else{
@@ -91,10 +96,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
             }
         });
         if(dataList.get(position).isSelected()){
-            holder.imView.setImageDrawable(activity.getDrawable(R.drawable.check));
+            holder.cardView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary,null));
+           // holder.imView.setImageDrawable(activity.getDrawable(R.drawable.check));
             setPlace(dataList.get(position));
         }else{
-            holder.imView.setImageDrawable(null);
+            holder.cardView.setBackgroundColor(activity.getResources().getColor(R.color.transparent,null));
+            //holder.imView.setImageDrawable(null);
         }
         String id = dataList.get(position).getId();
         /*if(activity.containsId(dataList.get(position).getId())){

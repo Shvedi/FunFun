@@ -49,15 +49,17 @@ public class TweetHandler {
     private String secret;
     private String screen_name;
     private String bearerToken;
-    private HashMap<String, mPlace> tweets;
+    private MainActivity main;
     BitmapDescriptor bitDesc;
 
-    public TweetHandler(TwitterActivity twitterActivity) {
+    public TweetHandler(TwitterActivity twitterActivity, MainActivity main) {
         this.twitterActivity = twitterActivity;
-        tweets = new HashMap<>();
+
+        this.main = main;
     }
 
     public void tweet(String msg, double latitude, double longitude, String placeID) {
+        Log.d("TWEETHANDLER ","TWEET PLACEID: " +placeID);
         TwitterSession session = twitterActivity.getSession();
         StatusesService statusesService = TwitterCore.getInstance().getApiClient(session).getStatusesService();
         Call<Tweet> update = statusesService.update(msg, null, null, latitude, longitude, placeID, null, null, null);
@@ -76,8 +78,11 @@ public class TweetHandler {
     }
 
     public void parseTimeLineJsonResult(String response){
+        String text1 = "";
         String text = "";
         String date = "";
+        String placeID = "";
+        String tweetID = "";
         Double latitude = null;
         Double longitude = null;
         try {
@@ -92,19 +97,27 @@ public class TweetHandler {
                 jsonObject = arr.getJSONObject(i);
                 if (jsonObject.getString("source").contains("placeholder.com")){
                     //latitude = Double.parseDouble(obj.getString("coordinates"));
-                    text = jsonObject.getString("text");
-                    bitDesc = translateHappiness(text);
-                    text = text.substring(text.indexOf("at")+3 ,text.length());
+                    text1 = jsonObject.getString("text");
+                    bitDesc = translateHappiness(text1);
+                    text = text1.substring(text1.indexOf("at")+3 ,text1.length());
                     date = jsonObject.getString("created_at");
                     date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
+                    placeID = jsonObject.getString("place");
+                    Log.d("TWEETHANDLER","PLACEID: "+placeID);
+                    tweetID = jsonObject.getString("id");
                     coordObj = jsonObject.getJSONObject("coordinates");
                     coordArr = coordObj.getJSONArray("coordinates");
                     longitude = coordArr.getDouble(0);
                     latitude = coordArr.getDouble(1);
+/*
                     twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
                     id = jsonObject.getString("id");
 
-                    tweets.put(jsonObject.getString("id"),new mPlace(text,date,latitude,longitude));
+                    tweets.put(jsonObject.getString("id"),new mPlace(text,date,latitude,longitude));*/
+
+                    twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,tweetID);
+                    main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
+
                 }
                 else{
                     //Fetched Message isnt from this application!

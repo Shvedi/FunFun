@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/ll_parent_user_information"
+        android:id="@+id/placeInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,10 +24,10 @@
                 android:layout_height="45dp" />
 
             <TextView
-                android:id="@+id/tv_user_information_title"
+                android:id="@+id/placeInfo_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Place Name"
+
                 android:textSize="25sp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
@@ -44,14 +44,13 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/tv_latitude"
+                android:id="@+id/placeInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="You had fun on your last visit"
-                android:textSize="20sp"
-                android:textAlignment="center"/>
 
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
 
         </LinearLayout>

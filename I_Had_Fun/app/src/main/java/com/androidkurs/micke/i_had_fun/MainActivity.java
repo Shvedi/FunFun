@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -55,7 +56,7 @@ import com.twitter.sdk.android.core.models.User;
 
 import static java.security.AccessController.getContext;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Controller controller;
@@ -251,7 +252,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         myLoc.startLocation();
+        mMap.setOnInfoWindowClickListener(this);
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        controller.markerInfoClicked(marker);
+
+        Log.d("MAINACTIVITY","MARKER ID: "+marker.getId());
+    }
+
 
     public Controller getController() {
         return this.controller;
@@ -278,6 +288,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+
+
 
     private class ButtonListener implements View.OnClickListener{
 
@@ -339,13 +351,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit) {
+   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit,String tweetID) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit));
+
+
+        mMap.addMarker( new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit).snippet(tweetID));
+
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
            @Override
            public View getInfoWindow(Marker arg0) {
+
                return null;
            }
 
@@ -361,12 +377,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                title.setTypeface(null, Typeface.BOLD);
                title.setText(marker.getTitle());
 
+
                TextView snippet = new TextView(MainActivity.this);
                snippet.setTextColor(Color.GRAY);
                snippet.setText(marker.getSnippet());
 
                info.addView(title);
                info.addView(snippet);
+
                info.removeViewAt(info.getChildCount()-1);
                return info;
            }

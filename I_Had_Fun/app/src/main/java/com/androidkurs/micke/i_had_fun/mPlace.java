@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class mPlace {
+
+    private  String msg;
     private String text;
     private String date;
     private String name;
@@ -18,6 +20,11 @@ public class mPlace {
     private LatLng latLong;
     private double Latitude = 0.0;
     private double Longitude = 0.0;
+
+    public String getMsg() {
+        return msg;
+    }
+
 
     public Double getLatitude() {
         return Latitude;
@@ -53,11 +60,13 @@ public class mPlace {
         this.Longitude = latLong.longitude;
     }
 
-    public mPlace(String text,String date, Double latitude,Double longitude){
+    public mPlace(String text,String date, Double latitude,Double longitude, String placeID, String msg){
         this.Latitude = latitude;
         this.Longitude = longitude;
         this.text = text;
         this.date = date;
+        this.id = placeID;
+        this.msg = msg;
     }
 
     public String getName() {

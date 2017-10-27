@@ -21,38 +21,36 @@ import java.util.HashMap;
  * Created by hello on 2017-10-20.
  */
 
-public class GetPhotosAsync extends AsyncTask<Void,Void,Void> {
+public class GetPhotosAsync  {
     private GeoDataClient geoClient;
     private PlaceDetectionClient placeDetectionClient;
     private String placeId;
-    private MainActivity activity;
-    private ArrayList<mPlace> placeList;
+    private Controller controller;
     private int index = 1;
+    private Bitmap bitmap;
     private HashMap<String, Bitmap> placeMap = new HashMap<>();
+    private mPlace place;
 
 
 
-    public GetPhotosAsync(MainActivity activity, GeoDataClient geoClient, PlaceDetectionClient detectClient, ArrayList<mPlace> placeList){
+    public GetPhotosAsync(Controller controller, GeoDataClient geoClient, PlaceDetectionClient detectClient, mPlace place){
         this.geoClient = geoClient;
         this.placeDetectionClient = detectClient;
-        this.placeList = placeList;
-        this.activity = activity;
+        this.place = place;
+        this.placeId = place.getId();
+        this.controller = controller;
+
 
 
     }
 
 
-    @Override
-    protected Void doInBackground(Void... voids) {
+
+    public void fetchPlacePhoto() {
         Log.d("GETPHOTO","DOINBACKGROUND");
+        Log.d("GETPHOTO", "PLACE ID: "+placeId);
 
-
-        Log.d("GETPHOTO","PlacelistSize: "+placeList.size());
-
-
-        final mPlace place=placeList.get(index);
-
-        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = geoClient.getPlacePhotos(place.getId());
+        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = geoClient.getPlacePhotos(placeId);
         photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
             @Override
             public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
@@ -61,38 +59,43 @@ public class GetPhotosAsync extends AsyncTask<Void,Void,Void> {
                 // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
                 PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                 // Get the first photo in the list.
-                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                photoMetadataBuffer.release();
-                // Get the attribution text.
                 Log.d("GETPHOTOASYnC", "METADATACOMPLETE");
+                try {
+                    PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                    photoMetadataBuffer.release();
+
+
+
+                // Get the attribution text.
+
                 // Get a full-size bitmap for the photo.
                 Task<PlacePhotoResponse> photoResponse = geoClient.getScaledPhoto(photoMetadata, 40, 40);
                 photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
                     @Override
                     public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
                         PlacePhotoResponse photo = task.getResult();
-                        Bitmap bitmap = photo.getBitmap();
-                        placeMap.put(place.getId(), bitmap);
+                        bitmap = photo.getBitmap();
+                        onPostExecute();
+
                         Log.d("GETPHOTO", "onCOMPLETE");
                     }
-                });
+                }); }catch (IllegalStateException e){
+                    Log.d("GETPHOTOASYNC","PHOTOMETADATABUFFER EMPTY");
+                }
 
             }
         });
 
-        return null;
+
+    }
+
+
+
+    private void onPostExecute() {
+        place.setBitmap(bitmap);
+        controller.PhotoFetched(place);
+
     }
 
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        if(index == placeList.size()-2){
-           // activity.addToPlaceMap(placeMap);
-        }else{
-            index++;
-           // activity.rerunTask();
-        }
-
-    }
 }

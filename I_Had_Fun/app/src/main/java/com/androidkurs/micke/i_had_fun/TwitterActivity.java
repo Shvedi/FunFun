@@ -44,7 +44,7 @@ public class TwitterActivity {
                 .debug(true)
                 .build();
         Twitter.initialize(config);
-        this.tweetHandler = new TweetHandler(this);
+        this.tweetHandler = new TweetHandler(this, main);
     }
     public boolean initLogin() {
         tAuthorClient = new TwitterAuthClient();
