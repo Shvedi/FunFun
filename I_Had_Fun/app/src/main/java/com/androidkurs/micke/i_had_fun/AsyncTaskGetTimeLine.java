@@ -18,7 +18,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     public boolean finished;
-
     private TweetHandler tweetHandler;
     private String urlGet,bearerToken;
     private StringBuilder response;
@@ -78,6 +77,31 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         finished = true;
         tweetHandler.parseTimeLineJsonResult(response.toString());
+    }
+
+    public class AsyncTaskDestroyTweet extends AsyncTask<Void, Void, Void>{
+        public boolean finished;
+        private TweetHandler tweetHandler;
+        private String urlGet;
+        private String id;
+        private StringBuilder response;
+
+        public AsyncTaskDestroyTweet(String url, String id, TweetHandler tweetHandler) {
+            this.tweetHandler = tweetHandler;
+            this.urlGet=url;
+            this.id = id;
+            execute();
+        }
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
     }
 
 }

@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -47,10 +49,12 @@ public class TweetHandler {
     private String secret;
     private String screen_name;
     private String bearerToken;
+    private HashMap<String, mPlace> tweets;
     BitmapDescriptor bitDesc;
 
     public TweetHandler(TwitterActivity twitterActivity) {
         this.twitterActivity = twitterActivity;
+        tweets = new HashMap<>();
     }
 
     public void tweet(String msg, double latitude, double longitude, String placeID) {
@@ -79,30 +83,30 @@ public class TweetHandler {
         try {
             JSONArray arr = new JSONArray(response);
             JSONArray coordArr;
-            JSONObject obj;
+            JSONObject jsonObject;
+            JSONObject coordObj;
+
             for (int i=0; i < arr.length(); i++){
-                obj = arr.getJSONObject(i);
-                if (obj.getString("source").contains("placeholder.com")){
+                jsonObject = arr.getJSONObject(i);
+                if (jsonObject.getString("source").contains("placeholder.com")){
                     //latitude = Double.parseDouble(obj.getString("coordinates"));
-                    text = obj.getString("text");
+                    text = jsonObject.getString("text");
                     bitDesc = translateHappiness(text);
                     text = text.substring(text.indexOf("at")+3 ,text.length());
-                    date = obj.getString("created_at");
+                    date = jsonObject.getString("created_at");
                     date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
-                    obj = obj.getJSONObject("coordinates");
-                    coordArr = obj.getJSONArray("coordinates");
+                    coordObj = jsonObject.getJSONObject("coordinates");
+                    coordArr = coordObj.getJSONArray("coordinates");
                     longitude = coordArr.getDouble(0);
                     latitude = coordArr.getDouble(1);
                     twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
+                    tweets.put(jsonObject.getString("id"),new mPlace(text,date,latitude,longitude));
                 }
                 else{
                     //Fetched Message isnt from this application!
                 }
             }
-            //Placera alla objekten på kartan?!?
-            // Nuvarande lösning sätter markers direkt inom forloopen vi får diskutera vår slutgiltiga lösning senare!
-            // alt 1: Lägga alla tweets i placeobjekt, sedan lägga ut markers?
-            // alt 2: Lägga markers direkt på kartan inom forloopen?
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -52,10 +52,7 @@ public class TwitterActivity {
         cb = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
-                TwitterAuthToken authToken = twitterSession.getAuthToken();
-                token = authToken.token;
-                secret = authToken.secret;
+                fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
                 initResult = login(twitterSession);
                 //initResult = true;
