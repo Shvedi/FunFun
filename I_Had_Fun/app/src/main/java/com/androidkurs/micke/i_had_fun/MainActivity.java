@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Controller controller;
     private FloatingActionButton fab;
+    private TextView fabText;
     private DrawerLayout drawerLayout;
     private TextView navHeader;
     private Toolbar toolbar;
@@ -134,6 +135,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        controller.saveInstanceState();
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        controller.onRestoreInstatnce();
+        super.onRestoreInstanceState(savedInstanceState);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
@@ -146,14 +161,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        } else if(controller.placeFragShowing()) {
+            controller.placeFragDismissed();
+
+
             /*
             TODO!!
             FIX LOGOUT FUNCTIONS?
              */
             // controller.logout();
-        }
+        } super.onBackPressed();
     }
 
 
@@ -167,23 +184,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabText = (TextView) findViewById(R.id.fabText);
     }
 
     private void initListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (lastAction== MotionEvent.ACTION_BUTTON_RELEASE){
+               // if (lastAction== MotionEvent.ACTION_BUTTON_RELEASE){
                     enableFab(false);
+                    Log.d("MAIN","FAB PRESSED");
                     controller.actionBtnPressed();
-                }
+               // }
             }
         });
-
+/*
         fab.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
-            public boolean onTouch(View view, MotionEvent event) {
+            public boolean onTouch(View view, MotionEvent event) { Log.d("MAIN","FAB TOUCHED");
                 switch (event.getActionMasked()) {
 
                     case MotionEvent.ACTION_DOWN:
@@ -207,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
 
             }
-        });
+        });*/
 
     }
 
@@ -240,11 +259,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                            @NonNull int[] grantResults) {
 
         switch (requestCode) {
-            case 1: {
+            case 10: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)   {
 
                     controller.setLoactionPermission(true);
+                    myLoc.startLocation();
+
                 }
             }
         }
@@ -308,7 +329,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void initPosition(double latitude, double longitude) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
+        if(mMap!= null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
+        }
+
     }
     public void setDialogFrag(DialogFragment dialogFrag){
         this.dialogFrag = dialogFrag;
@@ -379,5 +403,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public void setHappy(int happy){
         this.happy = happy;
+    }
+
+    public void fabVisible(boolean b) {
+        if(b){
+            fab.setVisibility(View.VISIBLE);
+            fabText.setVisibility(View.VISIBLE);
+
+        }else{
+            fab.setVisibility(View.INVISIBLE);
+            fabText.setVisibility(View.INVISIBLE);
+        }
+
     }
 }

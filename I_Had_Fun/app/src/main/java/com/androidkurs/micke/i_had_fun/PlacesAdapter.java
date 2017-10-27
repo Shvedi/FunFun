@@ -41,7 +41,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView imView;
-        private CardView cardView;
+        private FrameLayout cardView;
         private FrameLayout cardFrame;
 
 
@@ -51,7 +51,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
             super(v);
             imView = (ImageView)v.findViewById(R.id.imView);
             name = (TextView)v.findViewById(R.id.placeName);
-            cardView = (CardView)v.findViewById(R.id.placeCard);
+            cardView = (FrameLayout)v.findViewById(R.id.placeCard);
 
 
         }
@@ -70,6 +70,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.cardView.setBackgroundColor(activity.getResources().getColor(R.color.transparent,null));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

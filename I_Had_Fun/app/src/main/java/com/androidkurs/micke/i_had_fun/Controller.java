@@ -68,12 +68,27 @@ public class Controller {
             Log.d("MAINCONTROLLER","DATAFRAG = NULL");
             dataFrag=new DataFragment();
             fm.beginTransaction().add(dataFrag,"dataFrag").commit();
+        }else{
+            Log.d("MAINCONTROLLER","DATAFRAG = NOT NULL");
         }
     }
 
     private void initFragments() {
         this.placeFrag = new PlacesFragment();
         resetDialog();
+    }
+
+
+    public void onRestoreInstatnce() {
+        Log.d("CONTROLLER","ONRESTORE");
+        initDataFrag();
+        initFragments();
+        if(dataFrag.getplaceFragShowing()){
+            Log.d("CONTROLLER","PLACEFRAG SHOWING");
+            main.fabVisible(false);
+            main.enableFab(false);
+            placeFrag.show(main.getFragmentManager(),"Choose Loacation");
+        }
     }
 
     public void resetDialog(){
@@ -140,6 +155,8 @@ public class Controller {
     public void placeFetchComplete(ArrayList<mPlace> placeList) {
         dataFrag.setPlaceList(placeList);
         Log.d("CONTROLLER","PlaceListSize: "+placeList.size());
+        main.fabVisible(false);
+        dataFrag.placeFragShowing(true);
         placeFrag.show(main.getFragmentManager(),"Choose Loacation");
     }
 
@@ -149,12 +166,16 @@ public class Controller {
             main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun));
             tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
         }
+        dataFrag.placeFragShowing(false);
         placeFrag.dismiss();
         main.enableFab(true);
+        main.fabVisible(true);
     }
 
     public void placeFragDismissed() {
+        dataFrag.placeFragShowing(false);
         main.enableFab(true);
+        main.fabVisible(true);
     }
 
     public DialogFragment getNewDialogFrag() {
@@ -189,5 +210,20 @@ public class Controller {
         int month = Integer.parseInt(date.substring(3,5));
         return date.substring(0,3) + months[month-1] + date.substring(5,date.length());
 
+    }
+
+    public boolean getPermissions() {
+        return dataFrag.isLocationPermissionGranted();
+    }
+
+
+    public void saveInstanceState() {
+        if(dataFrag.getplaceFragShowing()){
+            placeFrag.dismiss();
+        }
+    }
+
+    public boolean placeFragShowing() {
+        return dataFrag.getplaceFragShowing();
     }
 }

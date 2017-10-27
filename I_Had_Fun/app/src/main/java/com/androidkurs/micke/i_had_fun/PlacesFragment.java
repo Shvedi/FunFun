@@ -4,6 +4,7 @@ package com.androidkurs.micke.i_had_fun;
 import android.animation.ObjectAnimator;
 import android.app.DialogFragment;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -44,8 +45,10 @@ public class PlacesFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_places, container, false);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.controller =(Controller)((MainActivity) getActivity()).getController();
         this.dataFrag = controller.getDataFrag();
+        getDialog().setCanceledOnTouchOutside(false);
         this.placeList = dataFrag.getPlaceList();
         isHighlighted = false;
         initializeComponents(v);
@@ -75,7 +78,7 @@ public class PlacesFragment extends DialogFragment {
         rAdapter = new PlacesAdapter(placeList, (MainActivity) getActivity());
         LinearLayoutManager lLM = new LinearLayoutManager(getContext());
         rView.setLayoutManager(lLM);
-        rView.addItemDecoration(new ItemDecor(getActivity()));
+       // rView.addItemDecoration(new ItemDecor(getActivity()));
         rView.setAdapter(rAdapter);
 
 
@@ -209,9 +212,5 @@ public class PlacesFragment extends DialogFragment {
         veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3));
         happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4));
     }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        controller.placeFragDismissed();
-    }
+
 }
