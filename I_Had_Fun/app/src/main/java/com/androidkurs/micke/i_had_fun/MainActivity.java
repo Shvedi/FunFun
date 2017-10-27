@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
-    
+
     private class ButtonListener implements View.OnClickListener{
 
         @Override
