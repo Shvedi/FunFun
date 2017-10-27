@@ -85,6 +85,8 @@ public class TweetHandler {
             JSONArray coordArr;
             JSONObject jsonObject;
             JSONObject coordObj;
+            String id = null;
+            String url = null;
 
             for (int i=0; i < arr.length(); i++){
                 jsonObject = arr.getJSONObject(i);
@@ -100,6 +102,8 @@ public class TweetHandler {
                     longitude = coordArr.getDouble(0);
                     latitude = coordArr.getDouble(1);
                     twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
+                    id = jsonObject.getString("id");
+
                     tweets.put(jsonObject.getString("id"),new mPlace(text,date,latitude,longitude));
                 }
                 else{
