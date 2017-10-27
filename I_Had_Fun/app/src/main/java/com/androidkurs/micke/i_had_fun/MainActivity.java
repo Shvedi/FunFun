@@ -160,19 +160,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(controller.placeFragShowing()) {
-            controller.placeFragDismissed();
 
+        }else{
+            Log.d("MAINACTIVITY","PLACEFRAGSHOWING FALSE");
 
+            super.onBackPressed();
             /*
             TODO!!
             FIX LOGOUT FUNCTIONS?
              */
             // controller.logout();
-        } super.onBackPressed();
+        }
     }
 
 

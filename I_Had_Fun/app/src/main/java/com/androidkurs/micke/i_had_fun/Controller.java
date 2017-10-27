@@ -125,6 +125,7 @@ public class Controller {
             // for ActivityCompat#requestPermissions for more details.
             Log.d("MainAcitivty","PERMISSION FAIL");
         }
+        dataFrag.placeFragShowing(true);
         GetPlacesAsync getPlaces = new GetPlacesAsync(this, placeDetectionClient);
         getPlaces.fetchPlaces();
 
@@ -156,7 +157,7 @@ public class Controller {
         dataFrag.setPlaceList(placeList);
         Log.d("CONTROLLER","PlaceListSize: "+placeList.size());
         main.fabVisible(false);
-        dataFrag.placeFragShowing(true);
+
         placeFrag.show(main.getFragmentManager(),"Choose Loacation");
     }
 
@@ -174,6 +175,7 @@ public class Controller {
 
     public void placeFragDismissed() {
         dataFrag.placeFragShowing(false);
+        placeFrag.dismiss();
         main.enableFab(true);
         main.fabVisible(true);
     }

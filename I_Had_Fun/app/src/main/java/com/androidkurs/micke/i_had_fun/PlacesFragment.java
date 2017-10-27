@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -39,6 +40,16 @@ public class PlacesFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()){
+            @Override
+            public void onBackPressed() {
+               controller.placeFragDismissed();
+            }
+        };
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +57,7 @@ public class PlacesFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_places, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         this.controller =(Controller)((MainActivity) getActivity()).getController();
         this.dataFrag = controller.getDataFrag();
         getDialog().setCanceledOnTouchOutside(false);
@@ -212,5 +224,7 @@ public class PlacesFragment extends DialogFragment {
         veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3));
         happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4));
     }
+
+
 
 }
