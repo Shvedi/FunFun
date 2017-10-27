@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FloatingActionButton fab;
     private TextView fabText;
     private DrawerLayout drawerLayout;
+    private Button navLogOut;
     private TextView navHeader;
     private Toolbar toolbar;
     private NavigationView navView;
@@ -107,9 +109,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
         headerImage = headerLayout.findViewById(R.id.headerImage);
-        setupDrawerContent(navView);
+        //setupDrawerContent(navView);
         drawerToggle.syncState();
         navHeader = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
+        navLogOut = (Button) findViewById(R.id.nav_logout);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -118,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         return true;
     }
 
@@ -228,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
+        ButtonListener listener = new ButtonListener();
+        navLogOut.setOnClickListener(listener);
+
     }
 
 
@@ -283,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 switch (id){
                     case R.id.nav_logout:
-                        drawerItemSelected = 4;
+                        mMap.clear();
                         twitterActivity.logOut();
                         controller.resetDialog();
                         break;
@@ -292,13 +297,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     TODO!!!
                     LOGOUTFUNCTIONS + OTHER OPTIONS?
                      */
-
                 //controller.setFragment(drawerItemSelected);
                 drawerLayout.closeDrawers();
-
                 return true;}
         });
     }
+    private class ButtonListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.nav_logout:
+                    twitterActivity.logOut();
+                    controller.resetDialog();
+                    drawerLayout.closeDrawers();
+                    break;
+            }
+        }
+    }
+
     public void setUserProfile(User user){
         navHeader.setText(user.name);
         String profileImage = user.profileImageUrl.replace("_normal", "");
@@ -334,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+
     public void setDialogFrag(DialogFragment dialogFrag){
         this.dialogFrag = dialogFrag;
     }
@@ -347,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
    public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit) {
         LatLng myLocation = new LatLng(latitude,longitude);
         mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit));
-       mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
            @Override
            public View getInfoWindow(Marker arg0) {
@@ -375,6 +393,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                info.removeViewAt(info.getChildCount()-1);
                return info;
            }
+
        });}
 
 /**

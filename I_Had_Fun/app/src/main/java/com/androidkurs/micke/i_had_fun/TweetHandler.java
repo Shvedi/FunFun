@@ -74,25 +74,30 @@ public class TweetHandler {
     public void parseTimeLineJsonResult(String response){
         String text = "";
         String date = "";
-        Double latitude;
-        Double longitude;
+        Double latitude = null;
+        Double longitude = null;
         try {
             JSONArray arr = new JSONArray(response);
             JSONArray coordArr;
             JSONObject obj;
             for (int i=0; i < arr.length(); i++){
                 obj = arr.getJSONObject(i);
-                //latitude = Double.parseDouble(obj.getString("coordinates"));
-                text = obj.getString("text");
-                bitDesc = translateHappiness(text);
-                text = text.substring(text.indexOf("at")+3 ,text.length());
-                date = obj.getString("created_at");
-                date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
-                obj = obj.getJSONObject("coordinates");
-                coordArr = obj.getJSONArray("coordinates");
-                longitude = coordArr.getDouble(0);
-                latitude = coordArr.getDouble(1);
-                twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
+                if (obj.getString("source").contains("placeholder.com")){
+                    //latitude = Double.parseDouble(obj.getString("coordinates"));
+                    text = obj.getString("text");
+                    bitDesc = translateHappiness(text);
+                    text = text.substring(text.indexOf("at")+3 ,text.length());
+                    date = obj.getString("created_at");
+                    date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
+                    obj = obj.getJSONObject("coordinates");
+                    coordArr = obj.getJSONArray("coordinates");
+                    longitude = coordArr.getDouble(0);
+                    latitude = coordArr.getDouble(1);
+                    twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc);
+                }
+                else{
+                    //Fetched Message isnt from this application!
+                }
             }
             //Placera alla objekten på kartan?!?
             // Nuvarande lösning sätter markers direkt inom forloopen vi får diskutera vår slutgiltiga lösning senare!

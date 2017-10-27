@@ -82,7 +82,6 @@ public class MyLocation implements LocationListener {
 
     }
 
-
     @Override
     public void onLocationChanged(Location location) {
         main.initPosition(location.getLatitude(), location.getLongitude());
@@ -102,8 +101,4 @@ public class MyLocation implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
-
-
-
-
 }
