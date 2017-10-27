@@ -278,32 +278,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
-
-
-    private void setupDrawerContent(final NavigationView navView){
-
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int drawerItemSelected = 0;
-                int id = item.getItemId();
-
-                switch (id){
-                    case R.id.nav_logout:
-                        mMap.clear();
-                        twitterActivity.logOut();
-                        controller.resetDialog();
-                        break;
-                }
-                    /*
-                    TODO!!!
-                    LOGOUTFUNCTIONS + OTHER OPTIONS?
-                     */
-                //controller.setFragment(drawerItemSelected);
-                drawerLayout.closeDrawers();
-                return true;}
-        });
-    }
+    
     private class ButtonListener implements View.OnClickListener{
 
         @Override
