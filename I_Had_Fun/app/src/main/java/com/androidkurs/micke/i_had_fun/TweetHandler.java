@@ -1,39 +1,27 @@
 package com.androidkurs.micke.i_had_fun;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.DefaultLogger;
-import com.twitter.sdk.android.core.OAuthSigning;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import retrofit2.Call;
-
-import static android.R.attr.data;
 
 /**
  * Created by sonaj on 2017-10-23.
@@ -76,6 +64,47 @@ public class TweetHandler {
             }
         });
     }
+    /**
+     * Optional method for getting tweet instead of the asynctask method
+     **/
+    /*public void getUserTimeline(String screen_name) {
+        String url = "923234863158788096";
+        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient(twitterActivity.getSession());
+        StatusesService statusesService = twitterApiClient.getStatusesService();
+        Call<List<Tweet>> userTimeline = statusesService.userTimeline(null,screen_name,3200,null,null,false,true,true,true);
+        userTimeline.enqueue(new Callback<java.util.List<Tweet>>() {
+
+            @Override
+            public void success(Result<List<Tweet>> result) {
+
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+
+            }
+        });
+    }*/
+
+    public void DestroyTweet(Long id){
+        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient(twitterActivity.getSession());
+        StatusesService statusesService = twitterApiClient.getStatusesService();
+        Call<Tweet> destroytweet = statusesService.destroy(id,null);
+        destroytweet.enqueue(new Callback<Tweet>() {
+
+            @Override
+            public void success(Result<Tweet> result) {
+                Log.v("DESTROYTWEET","Successfully removed Tweet?="+result.response.isSuccessful());
+                Toast.makeText(main,"Successfully removed Tweet!!!",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Log.v("DESTROYTWEET","Failed to remove Tweet!!!!");
+                Toast.makeText(main,"Failed!",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void parseTimeLineJsonResult(String response){
         String text1 = "";
@@ -90,8 +119,6 @@ public class TweetHandler {
             JSONArray coordArr;
             JSONObject jsonObject;
             JSONObject coordObj;
-            String id = null;
-            String url = null;
 
             for (int i=0; i < arr.length(); i++){
                 jsonObject = arr.getJSONObject(i);
@@ -122,7 +149,12 @@ public class TweetHandler {
                 else{
                     //Fetched Message isnt from this application!
                 }
+                /*
+                * Dangerous method down below Delets all tweets!
+                //twitterActivity.getTweetHandler().DestroyTweet(Long.parseLong(tweetID));
+                */
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

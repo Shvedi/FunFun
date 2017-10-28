@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView fabText;
     private DrawerLayout drawerLayout;
     private Button navLogOut;
-    private TextView navHeader;
+    private TextView navHeaderName,navHeaderEmail;
     private Toolbar toolbar;
     private NavigationView navView;
     private ImageView headerImage;
@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         headerImage = headerLayout.findViewById(R.id.headerImage);
         //setupDrawerContent(navView);
         drawerToggle.syncState();
-        navHeader = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
+        navHeaderName = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
+        navHeaderEmail = (TextView)headerLayout.findViewById(R.id.nav_HeaderEmail);
         navLogOut = (Button) findViewById(R.id.nav_logout);
     }
 
@@ -306,7 +307,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void setUserProfile(User user){
-        navHeader.setText(user.name);
+        navHeaderName.setText(user.screenName.replace("_"," "));
+        navHeaderEmail.setText(user.email);
         String profileImage = user.profileImageUrl.replace("_normal", "");
         Glide.with(getApplicationContext()).load(profileImage).apply(RequestOptions.circleCropTransform()).into(headerImage);
     }

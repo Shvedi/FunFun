@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="16dp"
-                    android:text="FUN!"
+                    android:text="@string/fun"
                     android:textColor="#fff"
                     android:textSize="35sp"
                     app:layout_anchor="@id/fab"

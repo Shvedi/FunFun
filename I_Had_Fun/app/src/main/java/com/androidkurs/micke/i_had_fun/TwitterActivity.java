@@ -110,7 +110,7 @@ public class TwitterActivity {
     }
     public void fetchAllFunPosition(String bearerToken){
         this.bearerToken = bearerToken;
-        AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine(baseUrl+screen_name+"&count=3200"+"&include_rts=false",bearerToken,getTweetHandler());
+        AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine(baseUrl+screen_name+"&count=3200"+"&include_rts=false",bearerToken,getTweetHandler(),main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
     }
 
     public TwitterSession getSession(){
