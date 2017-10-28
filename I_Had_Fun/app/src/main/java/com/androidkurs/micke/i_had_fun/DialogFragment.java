@@ -44,7 +44,7 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDestroyView();
+                controller.startLogin();
             }
         });
     //    twitterbtn = (TwitterLoginButton) view.findViewById(R.id.twitterbutton);
@@ -57,7 +57,6 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
 
     @Override
     public void onDestroyView(){
-        controller.startLogin();
         super.onDestroyView();
     }
     public void initiate(View view) {

@@ -250,4 +250,8 @@ public class Controller {
         placeInformationSheet.setContent(dataFrag.getPlaceToDisplay());
 
     }
+
+    public DialogFragment getDialogFrag() {
+        return dialogFrag;
+    }
 }

@@ -56,6 +56,7 @@ public class TwitterActivity {
                 fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
                 initResult = login(twitterSession);
+
                 //initResult = true;
             }
             @Override
@@ -76,7 +77,6 @@ public class TwitterActivity {
         screen_name = getSession().getUserName();
         BearerToken token = new BearerToken(this,main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
         //main.setUserProfile(screen_name);
-
         return login(getSession());
     }
     public boolean login(final TwitterSession session) {
@@ -88,6 +88,8 @@ public class TwitterActivity {
                     User user = result.data;
                     main.setUserProfile(user);
                     loginResult = true;
+                    controller.getDialogFrag().dismiss();
+                    controller.getDialogFrag().onDestroyView();
                 }
             }
             @Override

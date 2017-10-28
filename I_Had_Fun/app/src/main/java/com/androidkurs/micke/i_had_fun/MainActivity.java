@@ -324,7 +324,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result to the login button.
-        tac.onActivityResult(requestCode, resultCode, data);
+        try{
+            tac.onActivityResult(requestCode, resultCode, data);
+        }
+        catch (Exception RuntimeException){
+            Log.v("onActivity","Failed delivering result");
+        }
+
     }
 
     private void permissions() {

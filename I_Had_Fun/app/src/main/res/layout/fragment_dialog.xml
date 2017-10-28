@@ -2,23 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
+    android:background="@color/tw__composer_white"
     tools:context="com.androidkurs.micke.i_had_fun.DialogFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="200dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_fun"
+            android:layout_gravity="center"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="45dp"
             android:fontFamily="cursive"
-            android:text="Log in and start having fun!"
+            android:text="Sign in and start having fun!"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -28,7 +33,7 @@
             android:id="@+id/loginbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom|center"
             android:paddingStart="10dp"
             android:background="@drawable/ic_twitter"
             android:drawableLeft="@drawable/ic_twitter_icon"
