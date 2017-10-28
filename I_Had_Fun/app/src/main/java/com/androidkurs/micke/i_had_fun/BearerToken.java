@@ -48,7 +48,6 @@ public class BearerToken extends AsyncTask<Object, Object, Void> {
         }
     }
 
-
     @Override
     protected Void doInBackground(Object... params) {
         finished = false;
