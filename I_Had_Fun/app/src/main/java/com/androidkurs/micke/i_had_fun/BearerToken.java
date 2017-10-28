@@ -27,15 +27,17 @@ import javax.net.ssl.HttpsURLConnection;
 public class BearerToken extends AsyncTask<Object, Object, Void> {
     public boolean finished;
 
-    private String consumerKey = "PpHjVX0LbKaJ4ztrYxTuO2R6y";
-    private String consumerSecret = "6cQemVy1Kyk8Uswh0jLY80xDyiswm30MgzoHV5o8RnMBxPS7ZE";
+    private String consumerKey;
+    private String consumerSecret;
     private String bearerToken;
     private String tokenType;
     private TwitterActivity twitterActivity;
     private String tokenUrl = "https://api.twitter.com/oauth2/token";
 
-    public BearerToken(TwitterActivity twitterActivity) {
+    public BearerToken(TwitterActivity twitterActivity, String consumerKey, String consumerSecret) {
         this.twitterActivity = twitterActivity;
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
         execute();
     }
 

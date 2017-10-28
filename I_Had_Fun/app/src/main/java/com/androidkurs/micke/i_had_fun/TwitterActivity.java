@@ -36,6 +36,7 @@ public class TwitterActivity {
 
     public TwitterActivity(MainActivity main){
         this.main = main;
+
         TwitterConfig config = new TwitterConfig.Builder(main)
                 .logger(new DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(new TwitterAuthConfig(
@@ -73,7 +74,7 @@ public class TwitterActivity {
         token = authToken.token;
         secret = authToken.secret;
         screen_name = getSession().getUserName();
-        BearerToken token = new BearerToken(this);
+        BearerToken token = new BearerToken(this,main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
         //main.setUserProfile(screen_name);
 
         return login(getSession());
@@ -103,6 +104,7 @@ public class TwitterActivity {
     public boolean isLoggedIn(){
         if (TwitterCore.getInstance().getSessionManager().getActiveSession() != null) {
             return true;
+
         }
         return  false;
     }

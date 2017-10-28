@@ -114,7 +114,6 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
                 connection.setDoInput(true);
                 connection.setUseCaches(false);
                 connection.setRequestProperty("Host", "api.twitter.com");
-                //connection.setRequestProperty("Accept-Encoding","gzip");
                 connection.setRequestProperty("Accept-Encoding", "identity");
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 connection.connect();
