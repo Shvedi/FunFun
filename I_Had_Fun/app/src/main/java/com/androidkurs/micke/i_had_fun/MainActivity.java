@@ -50,7 +50,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
@@ -301,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     twitterActivity.logOut();
                     controller.resetDialog();
                     drawerLayout.closeDrawers();
+                    mMap.clear();
                     break;
             }
         }
@@ -326,8 +329,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Pass the activity result to the login button.
         try{
             tac.onActivityResult(requestCode, resultCode, data);
-        }
-        catch (Exception RuntimeException){
+        } catch (TwitterException TwitterAuthException){
+            Log.v("onActivity","Authorize failed");
+        } catch (Exception RuntimeException){
             Log.v("onActivity","Failed delivering result");
         }
 

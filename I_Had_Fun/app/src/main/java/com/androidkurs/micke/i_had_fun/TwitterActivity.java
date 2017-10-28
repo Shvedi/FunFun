@@ -53,6 +53,8 @@ public class TwitterActivity {
         cb = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
+                controller.getDialogFrag().dismiss();
+                controller.getDialogFrag().onDestroyView();
                 fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
                 initResult = login(twitterSession);
@@ -88,8 +90,6 @@ public class TwitterActivity {
                     User user = result.data;
                     main.setUserProfile(user);
                     loginResult = true;
-                    controller.getDialogFrag().dismiss();
-                    controller.getDialogFrag().onDestroyView();
                 }
             }
             @Override
