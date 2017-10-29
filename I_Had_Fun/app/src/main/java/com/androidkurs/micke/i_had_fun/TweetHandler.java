@@ -50,7 +50,7 @@ public class TweetHandler {
         Log.d("TWEETHANDLER ","TWEET PLACEID: " +placeID);
         TwitterSession session = twitterActivity.getSession();
         StatusesService statusesService = TwitterCore.getInstance().getApiClient(session).getStatusesService();
-        Call<Tweet> update = statusesService.update(msg, null, null, latitude, longitude, placeID, null, null, null);
+        Call<Tweet> update = statusesService.update(msg, null, false, latitude, longitude, placeID, true, null, null);
         Log.d("TWITTERCOMPOSER","LAT: "+ latitude);
         update.enqueue(new Callback<Tweet>() {
             @Override
@@ -89,6 +89,7 @@ public class TweetHandler {
     public void DestroyTweet(Long id){
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient(twitterActivity.getSession());
         StatusesService statusesService = twitterApiClient.getStatusesService();
+
         Call<Tweet> destroytweet = statusesService.destroy(id,null);
         destroytweet.enqueue(new Callback<Tweet>() {
 
@@ -119,7 +120,7 @@ public class TweetHandler {
             JSONArray coordArr;
             JSONObject jsonObject;
             JSONObject coordObj;
-
+            //**ChIJRdqh7gKhU0YRDPZyoiietTw**//
             for (int i=0; i < arr.length(); i++){
                 jsonObject = arr.getJSONObject(i);
                 if (jsonObject.getString("source").contains("placeholder.com")){

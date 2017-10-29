@@ -237,6 +237,7 @@ public class Controller {
     public void markerInfoClicked(Marker marker) {
         GetPhotosAsync getPhoto = new GetPhotosAsync(this,geoClient,placeDetectionClient,dataFrag.getFromTweetsMap(marker.getSnippet()));
         getPhoto.fetchPlacePhoto();
+        
     }
 
     public void PhotoFetched(mPlace place) {
