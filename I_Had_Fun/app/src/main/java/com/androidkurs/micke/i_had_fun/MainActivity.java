@@ -365,11 +365,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit,String tweetID) {
+   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit,String placeId) {
         LatLng myLocation = new LatLng(latitude,longitude);
 
 
-        mMap.addMarker( new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit).snippet(tweetID));
+        mMap.addMarker( new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit).snippet(placeId));
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 

@@ -59,6 +59,7 @@ public class Controller {
                         //Get map of users in datasnapshot
                         retreivePlaces((Map<String,Object>) dataSnapshot.getValue());
                         dataFrag.setTweetsMap(places);
+                        twitterActivity.getData();
                     }
 
                     @Override
@@ -318,5 +319,7 @@ public class Controller {
     }
 
 
-
+    public HashMap<String, mPlace> getPlaces() {
+        return places;
+    }
 }
