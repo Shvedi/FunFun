@@ -135,7 +135,7 @@ public class BearerToken extends AsyncTask<Void, Void, Void> {
      * Sends to twitterActivity if there is a bearerToken and get all tweets
      * @param result the bearerToken that recently received from twitter
      */
-    
+
     @Override
     protected void onPostExecute(Void result) {
         finished = true;
