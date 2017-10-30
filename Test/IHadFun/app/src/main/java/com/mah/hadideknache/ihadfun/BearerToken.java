@@ -23,8 +23,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class BearerToken extends AsyncTask<Object, Object, Void> {
     public boolean finished;
 
-    private String consumerKey = "PpHjVX0LbKaJ4ztrYxTuO2R6y";
-    private String consumerSecret = "6cQemVy1Kyk8Uswh0jLY80xDyiswm30MgzoHV5o8RnMBxPS7ZE";
+    private String consumerKey = "Secret";
+    private String consumerSecret = "Secret";
     public String bearerToken;
     public String tokenType;
     private MainActivity main;
