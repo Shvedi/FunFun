@@ -47,7 +47,7 @@ public class TwitterActivity {
         Twitter.initialize(config);
         this.tweetHandler = new TweetHandler(this, main);
     }
-    public boolean initLogin() {
+    public void initLogin() {
         tAuthorClient = new TwitterAuthClient();
         Callback<TwitterSession> cb;
         cb = new Callback<TwitterSession>() {
@@ -57,20 +57,18 @@ public class TwitterActivity {
                 controller.getDialogFrag().onDestroyView();
                 fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
-                initResult = login(twitterSession);
 
-                //initResult = true;
             }
             @Override
             public void failure(TwitterException exception) {
+
                 Toast.makeText(main,"Failure",Toast.LENGTH_SHORT).show();
-                initResult = false;
+
             }
         };
         tAuthorClient.authorize(main,cb);
         main.twitterOnActivity(tAuthorClient);
         main.setTwitterActivity(this);
-        return loginResult;
     }
     public boolean fetchSession(){
         TwitterAuthToken authToken = getSession().getAuthToken();

@@ -34,7 +34,7 @@ public class PlacesFragment extends DialogFragment {
     private ArrayList<mPlace> placeList;
     private Button happybtn,happierbtn,veryhappybtn,happiestbtn;
     private String fun;
-
+    private int buttonHighlighted;
     private boolean isHighlighted;
     private int happy;
 
@@ -190,40 +190,44 @@ public class PlacesFragment extends DialogFragment {
         resetHighlight();
         switch (i){
             case 1:
-                if(isHighlighted){
+                if(isHighlighted && buttonHighlighted == 1){
                     resetHighlight();
                     isHighlighted = false;
                     break;
                 }
-                happybtn.setBackground(getResources().getDrawable(R.drawable.happy1highlight));
+                happybtn.setBackground(getResources().getDrawable(R.drawable.happy1highlight,null));
                 isHighlighted = true;
+                buttonHighlighted = 1;
                 break;
             case 2:
-                if(isHighlighted){
+                if(isHighlighted && buttonHighlighted == 2){
                     resetHighlight();
                     isHighlighted = false;
                     break;
                 }
                 happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2highlight,null));
                 isHighlighted = true;
+                buttonHighlighted = 2;
                 break;
             case 3:
-                if(isHighlighted){
+                if(isHighlighted && buttonHighlighted == 3){
                     resetHighlight();
                     isHighlighted = false;
                     break;
                 }
-                veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3highlight));
+                veryhappybtn.setBackground(getResources().getDrawable(R.drawable.happy3highlight,null));
                 isHighlighted = true;
+                buttonHighlighted = 3;
                 break;
             case 4:
-                if(isHighlighted){
+                if(isHighlighted && buttonHighlighted == 4){
                     resetHighlight();
                     isHighlighted = false;
                     break;
                 }
-                happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4highlight));
+                happiestbtn.setBackground(getResources().getDrawable(R.drawable.happy4highlight,null));
                 isHighlighted = true;
+                buttonHighlighted = 4;
         }
     }
 

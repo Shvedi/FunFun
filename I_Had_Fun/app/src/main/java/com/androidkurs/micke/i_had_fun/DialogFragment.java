@@ -32,6 +32,7 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setRetainInstance(true);
         View view = inflater.inflate(R.layout.fragment_dialog, container, false);
         initiate(view);
         addListenerOnButton(view);

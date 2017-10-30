@@ -53,8 +53,7 @@ public class Controller {
     }
 
     public void startLogin(){
-            String res = String.valueOf(twitterActivity.initLogin());
-            Log.d("RES INIT", res);
+            twitterActivity.initLogin();
     }
 
     private void initPlaceDetectionClient() {
@@ -97,10 +96,16 @@ public class Controller {
     }
 
     public void resetDialog(){
-        this.dialogFrag = new DialogFragment();
-        dialogFrag.setController(this);
-        main.setDialogFrag(dialogFrag);
-        showDialogFrag();
+        if(dialogFrag!=null) {
+            this.dialogFrag.dismiss();
+            this.dialogFrag.onDestroyView();
+        }
+        if(twitterActivity.getSession()==null) {
+            this.dialogFrag = new DialogFragment();
+            dialogFrag.setController(this);
+            main.setDialogFrag(dialogFrag);
+            showDialogFrag();
+        }
     }
 
     private void showDialogFrag(){
@@ -185,11 +190,6 @@ public class Controller {
         main.fabVisible(true);
     }
 
-    public DialogFragment getNewDialogFrag() {
-        DialogFragment dialogFrag = new DialogFragment();
-        dialogFrag.setController(this);
-        return dialogFrag;
-    }
     public void setFunString(String fun){
         this.fun = fun;
     }
