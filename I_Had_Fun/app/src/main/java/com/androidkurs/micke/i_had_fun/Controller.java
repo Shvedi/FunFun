@@ -58,6 +58,7 @@ public class Controller {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
                         retreivePlaces((Map<String,Object>) dataSnapshot.getValue());
+                        dataFrag.setTweetsMap(places);
                     }
 
                     @Override
