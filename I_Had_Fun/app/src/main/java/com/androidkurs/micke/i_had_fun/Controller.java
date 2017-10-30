@@ -93,6 +93,9 @@ public class Controller {
             main.enableFab(false);
             placeFrag.show(main.getFragmentManager(),"Choose Loacation");
         }
+        twitterActivity.fetchSession();
+
+
     }
 
     public void resetDialog(){
@@ -104,8 +107,8 @@ public class Controller {
             this.dialogFrag = new DialogFragment();
             dialogFrag.setController(this);
             main.setDialogFrag(dialogFrag);
-            showDialogFrag();
         }
+        showDialogFrag();
     }
 
     private void showDialogFrag(){
