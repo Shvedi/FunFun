@@ -4,16 +4,20 @@ package com.androidkurs.micke.i_had_fun;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -42,13 +46,21 @@ public class PlacesFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new Dialog(getActivity(), getTheme()){
+        return new Dialog(getActivity(), R.style.Theme){
             @Override
             public void onBackPressed() {
                controller.placeFragDismissed();
             }
         };
+    }
+    @Override public void onStart() {
+        super.onStart();
 
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams windowParam = window.getAttributes();
+        windowParam.dimAmount = 0.50f;
+        windowParam.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(windowParam);
     }
 
     @Override
