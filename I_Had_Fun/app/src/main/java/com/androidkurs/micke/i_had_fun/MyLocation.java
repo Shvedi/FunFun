@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -30,7 +31,47 @@ public class MyLocation implements LocationListener {
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(main, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("MyLocation","PERMISSION GRANTED!!");
+            Criteria criteria = new Criteria();
+            String bestProvider = String.valueOf(locM.getBestProvider(criteria, true));
+
+            Location loc = locM.getLastKnownLocation(bestProvider);
+
+
+            if(loc!=null) {
+                main.initPosition(loc.getLatitude(), loc.getLongitude());
+                Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
+                locM.requestLocationUpdates(bestProvider,5000,0,this);
+            }
+            else{
+                switch (bestProvider) {
+                    case "gps":
+                        Toast.makeText(main, "gps location is null, trying network", Toast.LENGTH_SHORT).show();
+                        loc = locM.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if(loc!=null){
+                            main.initPosition(loc.getLatitude(),loc.getLongitude());
+                            locM.requestLocationUpdates("network",5000,0,this);
+                        }
+                        else{
+                            Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case "network":
+                        Toast.makeText(main, "network location is null, trying gps", Toast.LENGTH_SHORT).show();
+                        loc = locM.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if(loc!=null){
+                            main.initPosition(loc.getLatitude(),loc.getLongitude());
+                            locM.requestLocationUpdates("gps",5000,0,this);
+                        }
+                        else{
+                            Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();
+                        }
+                }
+
+            }
         } else {
+            Log.d("MyLocation","PERMISSION NOT GRANTED");
             Toast.makeText(main,"permission not granted", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(main, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -38,44 +79,9 @@ public class MyLocation implements LocationListener {
                     Manifest.permission.INTERNET,
                     Manifest.permission.ACCESS_NETWORK_STATE}, 10);
         }
-        Criteria criteria = new Criteria();
-        String bestProvider = String.valueOf(locM.getBestProvider(criteria, true));
 
-        Location loc = locM.getLastKnownLocation(bestProvider);
-
-
-        if(loc!=null) {
-            main.initPosition(loc.getLatitude(), loc.getLongitude());
-            Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
-            locM.requestLocationUpdates(bestProvider,5000,0,this);
-        }
-        else{
-            switch (bestProvider) {
-                case "gps":
-                    Toast.makeText(main, "gps location is null, trying network", Toast.LENGTH_SHORT).show();
-                    loc = locM.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if(loc!=null){
-                        main.initPosition(loc.getLatitude(),loc.getLongitude());
-                        locM.requestLocationUpdates("network",5000,0,this);
-                    }
-                    else{
-                        Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case "network":
-                    Toast.makeText(main, "network location is null, trying gps", Toast.LENGTH_SHORT).show();
-                    loc = locM.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if(loc!=null){
-                        main.initPosition(loc.getLatitude(),loc.getLongitude());
-                        locM.requestLocationUpdates("gps",5000,0,this);
-                    }
-                    else{
-                        Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();
-                    }
-            }
-
-        }
     }
+
     @Override
     public void onLocationChanged(Location location) {
         main.initPosition(location.getLatitude(), location.getLongitude());
@@ -95,8 +101,4 @@ public class MyLocation implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
-
-
-
-
 }

@@ -36,6 +36,7 @@ public class TwitterActivity {
 
     public TwitterActivity(MainActivity main){
         this.main = main;
+
         TwitterConfig config = new TwitterConfig.Builder(main)
                 .logger(new DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(new TwitterAuthConfig(
@@ -44,7 +45,7 @@ public class TwitterActivity {
                 .debug(true)
                 .build();
         Twitter.initialize(config);
-        this.tweetHandler = new TweetHandler(this);
+        this.tweetHandler = new TweetHandler(this, main);
     }
     public boolean initLogin() {
         tAuthorClient = new TwitterAuthClient();
@@ -52,12 +53,12 @@ public class TwitterActivity {
         cb = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
-                TwitterAuthToken authToken = twitterSession.getAuthToken();
-                token = authToken.token;
-                secret = authToken.secret;
+                controller.getDialogFrag().dismiss();
+                controller.getDialogFrag().onDestroyView();
+                fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
                 initResult = login(twitterSession);
+
                 //initResult = true;
             }
             @Override
@@ -76,9 +77,8 @@ public class TwitterActivity {
         token = authToken.token;
         secret = authToken.secret;
         screen_name = getSession().getUserName();
-        BearerToken token = new BearerToken(this);
+        BearerToken token = new BearerToken(this,main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
         //main.setUserProfile(screen_name);
-
         return login(getSession());
     }
     public boolean login(final TwitterSession session) {
@@ -106,12 +106,13 @@ public class TwitterActivity {
     public boolean isLoggedIn(){
         if (TwitterCore.getInstance().getSessionManager().getActiveSession() != null) {
             return true;
+
         }
         return  false;
     }
     public void fetchAllFunPosition(String bearerToken){
         this.bearerToken = bearerToken;
-        AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine(baseUrl+screen_name+"&include_rts=false",bearerToken,getTweetHandler());
+        AsyncTaskGetTimeLine timeline = new AsyncTaskGetTimeLine(baseUrl+screen_name+"&count=3200"+"&include_rts=false",bearerToken,getTweetHandler());
     }
 
     public TwitterSession getSession(){

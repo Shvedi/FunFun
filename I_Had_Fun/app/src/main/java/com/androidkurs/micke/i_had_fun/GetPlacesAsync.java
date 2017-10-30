@@ -32,9 +32,10 @@ public class GetPlacesAsync  {
 
 
     public void fetchPlaces(){
+        Log.d("GETPLACES ASYNC","fetchplaces");
         @SuppressWarnings("MissingPermission")
         Task<PlaceLikelihoodBufferResponse> result = placeDetectionClient
-                .getCurrentPlace(new PlaceFilter());
+                .getCurrentPlace(null);
         result.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
             @Override
             public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {

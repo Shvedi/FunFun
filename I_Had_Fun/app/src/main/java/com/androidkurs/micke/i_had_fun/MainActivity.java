@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,19 +50,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
 import static java.security.AccessController.getContext;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Controller controller;
     private FloatingActionButton fab;
+    private TextView fabText;
     private DrawerLayout drawerLayout;
-    private TextView navHeader;
+    private Button navLogOut;
+    private TextView navHeaderName,navHeaderEmail;
     private Toolbar toolbar;
     private NavigationView navView;
     private ImageView headerImage;
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         permissions();
         initController();
         initDrawer();
@@ -106,9 +113,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
         headerImage = headerLayout.findViewById(R.id.headerImage);
-        setupDrawerContent(navView);
+        //setupDrawerContent(navView);
         drawerToggle.syncState();
-        navHeader = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
+        navHeaderName = (TextView)headerLayout.findViewById(R.id.nav_HeaderText);
+        navHeaderEmail = (TextView)headerLayout.findViewById(R.id.nav_HeaderEmail);
+        navLogOut = (Button) findViewById(R.id.nav_logout);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -117,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         return true;
     }
 
@@ -134,6 +142,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        controller.saveInstanceState();
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        controller.onRestoreInstatnce();
+        super.onRestoreInstanceState(savedInstanceState);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
@@ -143,10 +165,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+
+        }else{
+            Log.d("MAINACTIVITY","PLACEFRAGSHOWING FALSE");
+
             super.onBackPressed();
             /*
             TODO!!
@@ -167,23 +193,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabText = (TextView) findViewById(R.id.fabText);
     }
 
     private void initListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (lastAction== MotionEvent.ACTION_BUTTON_RELEASE){
+               // if (lastAction== MotionEvent.ACTION_BUTTON_RELEASE){
                     enableFab(false);
+                    Log.d("MAIN","FAB PRESSED");
                     controller.actionBtnPressed();
-                }
+               // }
             }
         });
-
+/*
         fab.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
-            public boolean onTouch(View view, MotionEvent event) {
+            public boolean onTouch(View view, MotionEvent event) { Log.d("MAIN","FAB TOUCHED");
                 switch (event.getActionMasked()) {
 
                     case MotionEvent.ACTION_DOWN:
@@ -207,7 +235,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
 
             }
-        });
+        });*/
+
+        ButtonListener listener = new ButtonListener();
+        navLogOut.setOnClickListener(listener);
 
     }
 
@@ -225,7 +256,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         myLoc.startLocation();
+        mMap.setOnInfoWindowClickListener(this);
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        controller.markerInfoClicked(marker);
+
+        Log.d("MAINACTIVITY","MARKER ID: "+marker.getId());
+    }
+
 
     public Controller getController() {
         return this.controller;
@@ -240,11 +280,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                            @NonNull int[] grantResults) {
 
         switch (requestCode) {
-            case 1: {
+            case 10: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)   {
 
                     controller.setLoactionPermission(true);
+                    myLoc.startLocation();
+
                 }
             }
         }
@@ -252,34 +294,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private void setupDrawerContent(final NavigationView navView){
 
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int drawerItemSelected = 0;
-                int id = item.getItemId();
+    private class ButtonListener implements View.OnClickListener{
 
-                switch (id){
-                    case R.id.nav_logout:
-                        drawerItemSelected = 4;
-                        twitterActivity.logOut();
-                        controller.resetDialog();
-                        break;
-                }
-                    /*
-                    TODO!!!
-                    LOGOUTFUNCTIONS + OTHER OPTIONS?
-                     */
-
-                //controller.setFragment(drawerItemSelected);
-                drawerLayout.closeDrawers();
-
-                return true;}
-        });
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.nav_logout:
+                    twitterActivity.logOut();
+                    controller.resetDialog();
+                    drawerLayout.closeDrawers();
+                    mMap.clear();
+                    break;
+            }
+        }
     }
+
     public void setUserProfile(User user){
-        navHeader.setText(user.name);
+        navHeaderName.setText(user.screenName.replace("_"," "));
+        navHeaderEmail.setText(user.email);
         String profileImage = user.profileImageUrl.replace("_normal", "");
         Glide.with(getApplicationContext()).load(profileImage).apply(RequestOptions.circleCropTransform()).into(headerImage);
     }
@@ -295,7 +328,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result to the login button.
-        tac.onActivityResult(requestCode, resultCode, data);
+        try{
+            tac.onActivityResult(requestCode, resultCode, data);
+        } catch (TwitterException TwitterAuthException){
+            Log.v("onActivity","Authorize failed");
+        } catch (Exception RuntimeException){
+            Log.v("onActivity","Failed delivering result");
+        }
+
     }
 
     private void permissions() {
@@ -308,8 +348,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void initPosition(double latitude, double longitude) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
+        if(mMap!= null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
+        }
+
     }
+
     public void setDialogFrag(DialogFragment dialogFrag){
         this.dialogFrag = dialogFrag;
     }
@@ -320,13 +364,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit) {
+   public void setMarker(Double latitude, Double longitude, String placename, String date, BitmapDescriptor bit,String tweetID) {
         LatLng myLocation = new LatLng(latitude,longitude);
-        mMap.addMarker(new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit));
-       mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+
+        mMap.addMarker( new MarkerOptions().position(myLocation).title(placename + "\n" + date).icon(bit).snippet(tweetID));
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
            @Override
            public View getInfoWindow(Marker arg0) {
+
                return null;
            }
 
@@ -342,15 +390,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                title.setTypeface(null, Typeface.BOLD);
                title.setText(marker.getTitle());
 
+
                TextView snippet = new TextView(MainActivity.this);
                snippet.setTextColor(Color.GRAY);
                snippet.setText(marker.getSnippet());
 
                info.addView(title);
                info.addView(snippet);
+
                info.removeViewAt(info.getChildCount()-1);
                return info;
            }
+
        });}
 
 /**
@@ -379,5 +430,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public void setHappy(int happy){
         this.happy = happy;
+    }
+
+    public void fabVisible(boolean b) {
+        if(b){
+            fab.setVisibility(View.VISIBLE);
+            fabText.setVisibility(View.VISIBLE);
+
+        }else{
+            fab.setVisibility(View.INVISIBLE);
+            fabText.setVisibility(View.INVISIBLE);
+        }
+
     }
 }

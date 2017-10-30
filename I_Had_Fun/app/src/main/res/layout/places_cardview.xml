@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:clickable="true"
     android:id="@+id/placeCard"
+    android:background="@android:color/transparent"
     >
 
 
@@ -13,17 +15,21 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/place_item_color">
+        android:background="@color/transparent"
+        >
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/placeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+
             android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:text="placeName"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+            android:textColor="@color/tw__solid_white"
+            android:typeface="serif" />
 
         <ImageView
             android:id="@+id/imView"
@@ -37,5 +43,5 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</FrameLayout>
 

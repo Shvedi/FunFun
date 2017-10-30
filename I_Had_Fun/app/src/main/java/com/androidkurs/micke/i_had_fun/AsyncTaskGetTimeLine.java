@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,16 +15,26 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by hadideknache on 2017-10-20.
+ *
+ * This class handles the connection to twitter through the api,
+ * Makes a connection to twitter requesting timeline and later receives the data as Json objects
+ * Json objects is later handled in TweetHandler
  */
 
-public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
+public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, String> {
     public boolean finished;
-
     private TweetHandler tweetHandler;
     private String urlGet,bearerToken;
     private StringBuilder response;
+    private String status;
 
-
+    /**
+     * This Constructor runs at the beginning of the Asynctask for fetching the timeline
+     * Used for instantiating stuff that is needed later during the process of connectiong and handling the input
+     * @param url the url used for fetching tweets
+     * @param bearerToken token that authenticates at twitter and give us permission to get timelines from api
+     * @param tweetHandler an instance to tweethandler
+     */
     public AsyncTaskGetTimeLine(String url, String bearerToken, TweetHandler tweetHandler) {
         this.tweetHandler = tweetHandler;
         this.urlGet=url;
@@ -31,8 +42,14 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
         execute();
     }
 
+    /**
+     * doInBackground handle the connection to twitter and receiving the data of the tweets as json
+     * For receiving JsonObjects need to set a header for the HttpConnection
+     * @param voids
+     * @return connectionResponseCode of the connection to twitter 200=success
+     */
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected String doInBackground(Void... voids) {
         HttpsURLConnection connection = null;
         BufferedReader bufferedReader;
 
@@ -48,7 +65,8 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
             connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             connection.connect();
-            Log.v("ConnectionStatus:",String.valueOf(connection.getResponseCode()));
+            status = String.valueOf(connection.getResponseCode());
+            Log.v("ConnectionStatus:",status);
             InputStream inputStream = connection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String inputLine = "";
@@ -58,12 +76,6 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
                 response.append(inputLine);
             }
 
-        } catch (MalformedURLException e) {
-            try {
-                throw new IOException("Invalid endpoint", e);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -71,13 +83,24 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
                 connection.disconnect();
             }
         }
-        return null;
+        return status;
     }
 
+    /**
+     * onPostExecute checks whether the connection was successfull or not
+     * if successful sends the input message from twitter to tweethandler
+     * @param result the connectionResponseCode which tells if connected successfully to twitter api or not
+     */
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(String result) {
         finished = true;
-        tweetHandler.parseTimeLineJsonResult(response.toString());
+        if (result.equals("200")){
+            tweetHandler.parseTimeLineJsonResult(response.toString());
+        }
+        else{
+            Log.v("AsynctaskPost","Failed to getTweetsFromTimeLine");
+        }
     }
+
 
 }
