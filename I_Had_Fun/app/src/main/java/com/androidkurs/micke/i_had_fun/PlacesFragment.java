@@ -177,7 +177,7 @@ public class PlacesFragment extends DialogFragment {
                     isHighlighted = false;
                     break;
                 }
-                happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2highlight));
+                happierbtn.setBackground(getResources().getDrawable(R.drawable.happy2highlight,null));
                 isHighlighted = true;
                 break;
             case 3:
