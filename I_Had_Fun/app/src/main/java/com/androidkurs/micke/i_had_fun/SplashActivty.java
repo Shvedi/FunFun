@@ -16,7 +16,6 @@ import android.widget.TextView;
  *
  *
  */
-
 public class SplashActivty extends Activity {
 
     private  ImageView imageView,imgLogo;
@@ -24,6 +23,7 @@ public class SplashActivty extends Activity {
     private RotateAnimation rotClockWise;
     private AnimationDrawable animationDrawable;
     private Animation fadeIn,fadeOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +33,6 @@ public class SplashActivty extends Activity {
         InitListeners();
         startAnimations();
         startImageAnimation();
-
-
 
     }
 
