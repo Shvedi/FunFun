@@ -39,11 +39,11 @@ public class TweetHandler {
     private String screen_name;
     private String bearerToken;
     private MainActivity main;
+    private int[] happyArr = {0,0,0,0};
     BitmapDescriptor bitDesc;
 
     public TweetHandler(TwitterActivity twitterActivity, MainActivity main) {
         this.twitterActivity = twitterActivity;
-
         this.main = main;
     }
 
@@ -172,22 +172,28 @@ public class TweetHandler {
     }
 
     public BitmapDescriptor translateHappiness(String text) {
+        Log.d("TWEETHANDLER","translating");
         BitmapDescriptor bit;
-        if(text.contains("had fun")){
+        if (text.contains("had fun")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker1);
-        }
-        else if(text.contains("very fun")){
+            happyArr[0] += 1;
+        } else if (text.contains("very fun")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker2);
-        }
-        else if(text.contains("blast")){
+            happyArr[1] += 1;
+        } else if (text.contains("blast")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker3);
-        }
-        else if(text.contains("amazing")){
+            happyArr[2] += 1;
+        } else if (text.contains("amazing")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker4);
-        }
-        else{
+            happyArr[3] += 1;
+        } else {
             return null;
         }
+        controller.updateHappyArr(happyArr);
         return bit;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }

@@ -92,6 +92,7 @@ public class Controller {
         twitterActivity = new TwitterActivity(main);
         tweetHandler = twitterActivity.getTweetHandler();
         twitterActivity.setController(this);
+        tweetHandler.setController(this);
         main.setTwitterActivity(twitterActivity);
     }
 
@@ -128,7 +129,6 @@ public class Controller {
 
     public void onRestoreInstatnce() {
         Log.d("CONTROLLER","ONRESTORE");
-
         initDataFrag();
         initFragments();
         if(dataFrag.getplaceFragShowing()){
@@ -345,5 +345,18 @@ public class Controller {
 
                     }
                 });
+    }
+
+    public void updateHappyArr(int[] happyArr) {
+        dataFrag.setHappyArr(happyArr);
+
+        showHappyAmmount(happyArr);
+    }
+    public int[] getHappyArr(){
+        return dataFrag.getHappyArr();
+    }
+
+    public void showHappyAmmount(int[] happyArr){
+        main.showHappyAmmount(happyArr);
     }
 }

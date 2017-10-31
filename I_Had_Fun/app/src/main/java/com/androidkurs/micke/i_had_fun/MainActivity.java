@@ -80,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TwitterActivity twitterActivity;
     private MyLocation myLoc;
     private int happy;
+    private TextView tvHappy1;
+    private TextView tvHappy2;
+    private TextView tvHappy3;
+    private TextView tvHappy4;
 
 
 
@@ -195,6 +199,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        tvHappy1 = (TextView) findViewById(R.id.tvAmm1);
+        tvHappy2 = (TextView) findViewById(R.id.tvAmm2);
+        tvHappy3 = (TextView) findViewById(R.id.tvAmm3);
+        tvHappy4 = (TextView) findViewById(R.id.tvAmm4);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fabText = (TextView) findViewById(R.id.fabText);
     }
@@ -296,6 +305,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void showHappyAmmount(int[] happyArr) {
+        tvHappy1.setText("x" + happyArr[0]);
+        tvHappy2.setText("x" + happyArr[1]);
+        tvHappy3.setText("x" + happyArr[2]);
+        tvHappy4.setText("x" + happyArr[3]);
+    }
 
 
     private class ButtonListener implements View.OnClickListener{
