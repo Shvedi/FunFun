@@ -198,4 +198,11 @@ public class TweetHandler {
     public void setController(Controller controller) {
         this.controller = controller;
     }
+
+    public void resetHappyArr() {
+        happyArr[0] = 0;
+        happyArr[1] = 0;
+        happyArr[2] = 0;
+        happyArr[3] = 0;
+    }
 }

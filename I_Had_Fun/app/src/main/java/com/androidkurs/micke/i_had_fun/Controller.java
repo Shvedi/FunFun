@@ -130,7 +130,7 @@ public class Controller {
     public void onRestoreInstatnce() {
         Log.d("CONTROLLER","ONRESTORE");
         initDataFrag();
-        initFragments();
+        //initFragments();
         if(dataFrag.getplaceFragShowing()){
             Log.d("CONTROLLER","PLACEFRAG SHOWING");
             main.fabVisible(false);
@@ -364,5 +364,9 @@ public class Controller {
 
     public void showHappyAmmount(int[] happyArr){
         main.showHappyAmmount(happyArr);
+    }
+
+    public void resetHappyArr() {
+        tweetHandler.resetHappyArr();
     }
 }

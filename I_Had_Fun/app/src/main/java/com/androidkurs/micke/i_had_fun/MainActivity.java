@@ -320,7 +320,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (view.getId()){
                 case R.id.nav_logout:
                     twitterActivity.logOut();
-
+                    //removeFragment(controller.getDataFrag());
+                    controller.resetHappyArr();
                     controller.resetDialog();
                     drawerLayout.closeDrawers();
                     mMap.clear();
