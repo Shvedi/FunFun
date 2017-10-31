@@ -43,30 +43,12 @@ public class Controller {
     private int happy;
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseInstance;
-    private HashMap<String,mPlace> places;
+    private HashMap<LatLng,mPlace> places;
     private String id;
 
 
 
     public Controller(MainActivity mainActivity) {
-       mFirebaseInstance = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseInstance.getReference().child("places");
-
-        mDatabaseReference.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Get map of users in datasnapshot
-                        retreivePlaces((Map<String,Object>) dataSnapshot.getValue());
-                        dataFrag.setTweetsMap(places);
-                        twitterActivity.getData();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
 
         this.main = mainActivity;
         initPlaceDetectionClient();
@@ -77,7 +59,7 @@ public class Controller {
 
     }
 
-    private void retreivePlaces(Map<String, Object> object) {
+    private void retrievePlaces(Map<String, Object> object) {
         places = new HashMap<>();
         String name;
         String id;
@@ -93,7 +75,7 @@ public class Controller {
             longitude = Double.parseDouble(singelPlace.get("longitude").toString());
             latlng = new LatLng(latitude,longitude);
 
-            places.put(name, new mPlace(name,id,latlng));
+            places.put(latlng, new mPlace(name,id,latlng));
         }
 
     }
@@ -310,17 +292,37 @@ public class Controller {
     }
 
     private void createPlace(mPlace mPlace) {
-        if (!(places.containsKey(mPlace.getName()))) {
+
             if (TextUtils.isEmpty(id)) {
                 id = mDatabaseReference.push().getKey();
             }
-            mDatabaseReference.child(id).setValue(mPlace);
+            mDatabaseReference.child(twitterActivity.getScreenName()).child(id).setValue(mPlace);
             id = "";
-        }
     }
 
 
-    public HashMap<String, mPlace> getPlaces() {
+    public HashMap<LatLng, mPlace> getPlaces() {
         return places;
+    }
+
+    public void dataBaseinit() {
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseInstance.getReference().child("places");
+
+        mDatabaseReference.child(twitterActivity.getScreenName()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Get map of users in datasnapshot
+                        retrievePlaces((Map<String,Object>) dataSnapshot.getValue());
+                        //dataFrag.setTweetsMap(places);
+                        twitterActivity.getData();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

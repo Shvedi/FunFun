@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
@@ -121,7 +122,7 @@ public class TweetHandler {
             JSONArray coordArr;
             JSONObject jsonObject;
             JSONObject coordObj;
-            //**ChIJRdqh7gKhU0YRDPZyoiietTw**//
+
             for (int i=0; i < arr.length(); i++){
                 jsonObject = arr.getJSONObject(i);
                 if (jsonObject.getString("source").contains("placeholder.com")){
@@ -146,19 +147,17 @@ public class TweetHandler {
                     if (text.contains("&amp")){
                         text = text.replace("&amp;","&");
                     }
-                    mPlace = (mPlace) main.getController().getPlaces().get(text.substring(0,text.length()-1));
+                    mPlace = (mPlace) main.getController().getPlaces().get(new LatLng(latitude,longitude));
 
-
-                    twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
+                    //twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
 
                     main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
-
                 }
                 else{
                     //Fetched Message isnt from this application!
                 }
                 /*
-                * Dangerous method down below Delets all tweets!
+                * Dangerous method down below Deletes all tweets!
                 //twitterActivity.getTweetHandler().DestroyTweet(Long.parseLong(tweetID));
                 */
             }

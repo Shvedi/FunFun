@@ -76,6 +76,7 @@ public class TwitterActivity {
         token = authToken.token;
         secret = authToken.secret;
         screen_name = getSession().getUserName();
+        controller.dataBaseinit();
         //main.setUserProfile(screen_name);
         return login(getSession());
     }
@@ -126,5 +127,9 @@ public class TwitterActivity {
 
     public TweetHandler getTweetHandler(){
         return  this.tweetHandler;
+    }
+
+    public String getScreenName() {
+        return screen_name;
     }
 }
