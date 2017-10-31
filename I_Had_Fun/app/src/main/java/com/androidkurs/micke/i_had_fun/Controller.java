@@ -310,12 +310,13 @@ public class Controller {
     }
 
     private void createPlace(mPlace mPlace) {
-
-        if (TextUtils.isEmpty(id)) {
-            id = mDatabaseReference.push().getKey();
+        if (!(places.containsKey(mPlace.getName()))) {
+            if (TextUtils.isEmpty(id)) {
+                id = mDatabaseReference.push().getKey();
+            }
+            mDatabaseReference.child(id).setValue(mPlace);
+            id = "";
         }
-        mDatabaseReference.child(id).setValue(mPlace);
-        id="";
     }
 
 
