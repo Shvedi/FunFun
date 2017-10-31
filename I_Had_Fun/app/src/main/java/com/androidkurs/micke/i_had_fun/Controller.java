@@ -12,6 +12,7 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
@@ -227,7 +228,9 @@ public class Controller {
             String funMsg = fun + placename + "!";
             place.setDate(date);
             place.setText(funMsg);
-
+            if (dataFrag.getPlaceMap().containsKey(id)){
+                twitterActivity.getTweetHandler().DestroyTweet(tweetHandler.getTwitterId(placename));
+            }
             tweetHandler.tweet(funMsg,date,tweetHandler.translateHappiness(fun), latitude, longitude, id,place);
 
         }
@@ -310,11 +313,21 @@ public class Controller {
         return dialogFrag;
     }
 
-    public void createPlace(mPlace mPlace) {
+    public void createPlace(mPlace mPlace, BitmapDescriptor bitmapDescriptor) {
 
 
         if (getDataFrag().getPlaceMap().containsKey(mPlace.getId())) {
             mPlace place = dataFrag.getPlaceMap().get(mPlace.getId());
+
+            place.setDate(mPlace.getDate());
+            place.setText(mPlace.getText());
+            place.setBitmap(mPlace.getBitmap());
+            place.setId(mPlace.getId());
+            place.setSelected(mPlace.isSelected());
+            place.setLongitude(mPlace.getLongitude());
+            place.setLatitude(mPlace.getLatitude());
+            dataFrag.setNewInfo(mPlace.getId(),place);
+
             mDatabaseReference.child(twitterActivity.getScreenName()).child(place.getKey()).setValue(mPlace);;
         }
         else{
@@ -322,9 +335,13 @@ public class Controller {
                 id = mDatabaseReference.push().getKey();
             }
             mDatabaseReference.child(twitterActivity.getScreenName()).child(id).setValue(mPlace);
+            mPlace.setKey(id);
+            dataFrag.setNewInfo(mPlace.getId(),mPlace);
             id = "";
-        }
+            //main.setMarker(mPlace.getLatitude(),mPlace.getLongitude(),mPlace.getName(),mPlace.getDate(),bitmapDescriptor,mPlace.getId());
 
+        }
+        main.setAllMarkers(dataFrag.getPlaceMap(),bitmapDescriptor);
     }
 
 

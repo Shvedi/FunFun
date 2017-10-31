@@ -77,12 +77,11 @@ public class TwitterActivity {
         secret = authToken.secret;
         screen_name = getSession().getUserName();
         controller.dataBaseinit();
+        BearerToken token = new BearerToken(this,main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
         //main.setUserProfile(screen_name);
         return login(getSession());
     }
-    public void getData(){
-        BearerToken token = new BearerToken(this,main.getString(R.string.consumer_key),main.getString(R.string.consumer_secret));
-    }
+
     public boolean login(final TwitterSession session) {
         TwitterCore.getInstance().getApiClient(session).getAccountService().verifyCredentials(true, false, true).enqueue(new Callback<User>() {
 
@@ -132,4 +131,6 @@ public class TwitterActivity {
     public String getScreenName() {
         return screen_name;
     }
+
+
 }

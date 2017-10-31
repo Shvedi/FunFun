@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,6 +42,7 @@ public class TweetHandler {
     private MainActivity main;
     private int[] happyArr = {0,0,0,0};
     BitmapDescriptor bitDesc;
+    private HashMap<String,Long> twitterId;
 
     public TweetHandler(TwitterActivity twitterActivity, MainActivity main) {
         this.twitterActivity = twitterActivity;
@@ -57,8 +59,8 @@ public class TweetHandler {
             @Override
             public void success(Result<Tweet> result) {
                 Toast.makeText(twitterActivity.main,"Tweet SUCCESSFUL",Toast.LENGTH_SHORT).show();
-                controller.createPlace(place);
-                main.setMarker(place.getLatitude(),place.getLongitude(),place.getName(),place.getDate(),bitmapDescriptor,place.getId());
+                twitterId.put(place.getName(),result.data.id);
+                controller.createPlace(place,bitmapDescriptor);
             }
 
             @Override
@@ -124,14 +126,14 @@ public class TweetHandler {
             JSONArray coordArr;
             JSONObject jsonObject;
             JSONObject coordObj;
-
+            twitterId = new HashMap<>();
             for (int i=0; i < arr.length(); i++){
                 jsonObject = arr.getJSONObject(i);
                 if (jsonObject.getString("source").contains("placeholder.com")){
                     //latitude = Double.parseDouble(obj.getString("coordinates"));
                     text1 = jsonObject.getString("text");
                     bitDesc = translateHappiness(text1);
-                    text = text1.substring(text1.indexOf("at")+3 ,text1.length());
+                    text = text1.substring(text1.indexOf("at")+3 ,text1.length()-1);
                     date = jsonObject.getString("created_at");
                     date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
                     placeID = jsonObject.getString("place");
@@ -149,6 +151,7 @@ public class TweetHandler {
                     if (text.contains("&amp")){
                         text = text.replace("&amp;","&");
                     }
+                    twitterId.put(text,Long.parseLong(tweetID));
                     //mPlace = (mPlace) main.getController().getPlaces().get(new LatLng(latitude,longitude));
 
                     //twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
@@ -194,7 +197,9 @@ public class TweetHandler {
         controller.updateHappyArr(happyArr);
         return bit;
     }
-
+    public Long getTwitterId(String placename){
+        return twitterId.get(placename);
+    }
     public void setController(Controller controller) {
         this.controller = controller;
     }

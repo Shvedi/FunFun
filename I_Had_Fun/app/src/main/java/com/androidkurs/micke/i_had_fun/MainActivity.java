@@ -58,6 +58,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
+import java.util.HashMap;
+
 import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -310,6 +312,48 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         tvHappy2.setText("x" + happyArr[1]);
         tvHappy3.setText("x" + happyArr[2]);
         tvHappy4.setText("x" + happyArr[3]);
+    }
+
+    public void setAllMarkers(HashMap<String, mPlace> mPlace, BitmapDescriptor bitmapDescriptor) {
+        mMap.clear();
+        for (HashMap.Entry<String, mPlace> entry : mPlace.entrySet()) {
+            LatLng myLocation = new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude());
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(entry.getValue().getName() + "\n" + entry.getValue().getDate()).icon(twitterActivity.getTweetHandler().translateHappiness(entry.getValue().getText())).snippet(entry.getValue().getId()));
+        }
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                LinearLayout info = new LinearLayout(MainActivity.this);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(MainActivity.this);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+
+                TextView snippet = new TextView(MainActivity.this);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                info.removeViewAt(info.getChildCount()-1);
+                return info;
+            }
+
+        });
     }
 
 

@@ -113,7 +113,10 @@ public class DataFragment extends Fragment {
     }
     public void addToPlaceMap(String id, mPlace mPlace) {
         placeMap.put(id,mPlace);
+    }
 
+    public void setNewInfo(String id, mPlace place) {
+        placeMap.put(id,place);
     }
 
     public void addBitmapToPlace(String placeid, Bitmap bitmap,PlaceInfo placeInfo) {

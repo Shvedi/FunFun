@@ -124,11 +124,26 @@ public class mPlace {
         return key;
     }
 
+
     public void setPlaceInfo(PlaceInfo place) {
         this.place = place;
     }
 
     public PlaceInfo getPlaceInfo() {
         return this.place;
+    }
+
+
+    public void setLongitude(Double longitude) {
+        this.Longitude = longitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.Latitude = latitude;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+
     }
 }
