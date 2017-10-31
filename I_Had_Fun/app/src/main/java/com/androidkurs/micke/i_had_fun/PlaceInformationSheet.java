@@ -1,11 +1,15 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Gustaf Bohlin on 29/09/2017.
  */
@@ -21,7 +29,7 @@ import android.widget.TextView;
 public class PlaceInformationSheet extends BottomSheetDialogFragment {
 
     private View rootView;
-    private TextView placeInfoTitle, placeInfo;
+    private TextView placeInfoTitle, placeInfo, placeURL;
     private ImageView placeInfoImage;
     private LinearLayout placeInfoLayout;
     private Bitmap bitmap;
@@ -42,6 +50,7 @@ public class PlaceInformationSheet extends BottomSheetDialogFragment {
         placeInfoLayout = (LinearLayout) rootView.findViewById(R.id.placeInfoLayout);
         placeInfoTitle = (TextView) rootView.findViewById(R.id.placeInfo_title);
         placeInfo = (TextView) rootView.findViewById(R.id.placeInfo);
+        placeURL = (TextView) rootView.findViewById(R.id.placeURL);
         placeInfoImage = (ImageView) rootView.findViewById(R.id.placePhoto);
 
     }
@@ -63,13 +72,31 @@ public class PlaceInformationSheet extends BottomSheetDialogFragment {
     }
 
     public void setContent(mPlace placeToDisplay) {
-       Bitmap bitmap = placeToDisplay.getBitmap();
-        if(bitmap!=null){
-            placeInfoImage.setImageBitmap(placeToDisplay.getBitmap());
-        }
-        placeInfoTitle.setText(placeToDisplay.getName());
+        if(placeToDisplay!=null){
+            Bitmap bitmap = placeToDisplay.getBitmap();
+            if(bitmap!=null){
+                placeInfoImage.setImageBitmap(placeToDisplay.getBitmap());
+            }
+            placeInfoTitle.setText(placeToDisplay.getName());
+            if(placeToDisplay.getPlaceInfo()!=null){
+                PlaceInfo place =placeToDisplay.getPlaceInfo();
+                if(place.getAddress()!=null){
+                    placeInfo.setText(place.getAddress().toString());
+                }
 
-        placeInfo.setText(placeToDisplay.getMsg());
+
+                if(place.getWebsite()!=null){
+
+                    placeURL.setText( place.getWebsite().toString());
+                }
+
+
+            }
+        }
+
+
 
     }
+
+
 }

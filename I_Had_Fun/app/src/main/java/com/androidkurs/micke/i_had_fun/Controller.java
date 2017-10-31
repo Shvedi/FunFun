@@ -1,6 +1,7 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
@@ -287,12 +289,13 @@ public class Controller {
     }
 
     public void markerInfoClicked(Marker marker) {
-        GetPhotosAsync getPhoto = new GetPhotosAsync(this,geoClient,placeDetectionClient,dataFrag.getFromTweetsMap(marker.getSnippet()));
+        GetPhotosAsync getPhoto = new GetPhotosAsync(this,geoClient,placeDetectionClient,marker.getSnippet());
         getPhoto.fetchPlacePhoto();
     }
 
-    public void PhotoFetched(mPlace place) {
-        dataFrag.setPlaceToDisplay(place);
+    public void PhotoFetched(Bitmap bitmap, PlaceInfo placeInfo, String placeid) {
+        dataFrag.addBitmapToPlace(placeid,bitmap, placeInfo);
+        dataFrag.setPlaceToDisplay(placeid);
 
         new PlaceInformationSheet().show(main.getSupportFragmentManager(),"bottom");
 

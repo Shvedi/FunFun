@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
@@ -26,19 +28,27 @@ public class GetPhotosAsync  {
     private PlaceDetectionClient placeDetectionClient;
     private String placeId;
     private Controller controller;
+    private String atts=null;
     private int index = 1;
     private Bitmap bitmap;
+    private Place p;
+    private PlaceInfo placeInfo;
+    private boolean attsComplete = false;
+    private boolean bitmapComplete = false;
     private HashMap<String, Bitmap> placeMap = new HashMap<>();
-    private mPlace place;
 
 
 
-    public GetPhotosAsync(Controller controller, GeoDataClient geoClient, PlaceDetectionClient detectClient, mPlace place){
+
+    public GetPhotosAsync(Controller controller, GeoDataClient geoClient, PlaceDetectionClient detectClient, String placeId){
         this.geoClient = geoClient;
         this.placeDetectionClient = detectClient;
-        this.place = place;
-        this.placeId = place.getId();
+
+        this.placeId = placeId;
         this.controller = controller;
+
+        boolean attsComplete = false;
+        boolean bitmapComplete = false;
 
     }
 
@@ -47,6 +57,21 @@ public class GetPhotosAsync  {
     public void fetchPlacePhoto() {
         Log.d("GETPHOTO","DOINBACKGROUND");
         Log.d("GETPHOTO", "PLACE ID: "+placeId);
+        final Task<PlaceBufferResponse> placeDataResponse = geoClient.getPlaceById(placeId);
+        placeDataResponse.addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                PlaceBufferResponse place = task.getResult();
+                p =place.get(0);
+                placeInfo = new PlaceInfo(p.getId(),p.getAddress(),p.getWebsiteUri(),p.getName(),p.getPhoneNumber());
+
+
+                attsComplete = true;
+                onPostExecute();
+                place.release();
+
+            }
+        });
 
         final Task<PlacePhotoMetadataResponse> photoMetadataResponse = geoClient.getPlacePhotos(placeId);
         photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
@@ -60,22 +85,26 @@ public class GetPhotosAsync  {
                 Log.d("GETPHOTOASYnC", "METADATACOMPLETE");
                 try {
                     PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                    photoMetadataBuffer.release();
+
 
                 // Get the attribution text.
 
                 // Get a full-size bitmap for the photo.
-                Task<PlacePhotoResponse> photoResponse = geoClient.getScaledPhoto(photoMetadata, 40, 40);
+                Task<PlacePhotoResponse> photoResponse = geoClient.getScaledPhoto(photoMetadata, 60, 60);
                 photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
                     @Override
                     public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
                         PlacePhotoResponse photo = task.getResult();
                         bitmap = photo.getBitmap();
+                        bitmapComplete = true;
                         onPostExecute();
 
                         Log.d("GETPHOTO", "onCOMPLETE");
                     }
-                }); }catch (IllegalStateException e){
+
+                });
+                    photoMetadataBuffer.release();
+                }catch (IllegalStateException e){
                     Log.d("GETPHOTOASYNC","PHOTOMETADATABUFFER EMPTY");
                 }
 
@@ -88,8 +117,11 @@ public class GetPhotosAsync  {
 
 
     private void onPostExecute() {
-        place.setBitmap(bitmap);
-        controller.PhotoFetched(place);
+
+        if(attsComplete && bitmapComplete){
+            controller.PhotoFetched(bitmap,placeInfo, placeId);
+        }
+
 
     }
 

@@ -2,6 +2,7 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -15,6 +16,7 @@ public class mPlace {
     private String date;
     private String name;
     private String id;
+    private PlaceInfo place;
     private Bitmap bitmap = null;
     private Boolean selected = false;
     private LatLng latLong;
@@ -120,5 +122,13 @@ public class mPlace {
 
     public String getKey() {
         return key;
+    }
+
+    public void setPlaceInfo(PlaceInfo place) {
+        this.place = place;
+    }
+
+    public PlaceInfo getPlaceInfo() {
+        return this.place;
     }
 }

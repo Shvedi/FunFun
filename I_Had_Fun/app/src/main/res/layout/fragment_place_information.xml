@@ -20,8 +20,8 @@
             <ImageView
                 android:id="@+id/placePhoto"
 
-                android:layout_width="45dp"
-                android:layout_height="45dp" />
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
 
             <TextView
                 android:id="@+id/placeInfo_title"
@@ -40,7 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
@@ -51,6 +51,13 @@
 
                 android:textAlignment="center"
                 android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/placeURL"
+                android:autoLink="web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
 
         </LinearLayout>

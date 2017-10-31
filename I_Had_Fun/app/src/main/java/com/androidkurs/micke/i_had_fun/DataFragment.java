@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -96,8 +97,8 @@ public class DataFragment extends Fragment {
         return placeFragShowing;
     }
 
-    public void setPlaceToDisplay(mPlace placeToDisplay) {
-        this.placeToDisplay = placeToDisplay;
+    public void setPlaceToDisplay(String placeID) {
+        this.placeToDisplay = placeMap.get(placeID);
     }
 
     public mPlace getPlaceToDisplay() {
@@ -113,5 +114,12 @@ public class DataFragment extends Fragment {
     public void addToPlaceMap(String id, mPlace mPlace) {
         placeMap.put(id,mPlace);
 
+    }
+
+    public void addBitmapToPlace(String placeid, Bitmap bitmap,PlaceInfo placeInfo) {
+        if(this.placeMap.containsKey(placeid)){
+            this.placeMap.get(placeid).setBitmap(bitmap);
+            this.placeMap.get(placeid).setPlaceInfo(placeInfo);
+        }
     }
 }
