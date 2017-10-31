@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
@@ -63,20 +64,26 @@ public class Controller {
     private void retrievePlaces(Map<String, Object> object) {
         places = new HashMap<>();
         String name;
+        String funMsg;
         String id;
+        String date;
         double latitude;
         double longitude;
+
         LatLng latlng;
         for (Map.Entry<String, Object> entry : object.entrySet()){
 
             Map singelPlace = (Map) entry.getValue();
             name = singelPlace.get("name").toString();
             id = singelPlace.get("id").toString();
+            date = singelPlace.get("date").toString();
+            funMsg = singelPlace.get("text").toString();
             latitude = Double.parseDouble(singelPlace.get("latitude").toString());
             longitude = Double.parseDouble(singelPlace.get("longitude").toString());
-            latlng = new LatLng(latitude,longitude);
 
-            places.put(latlng, new mPlace(name,id,latlng));
+            latlng = new LatLng(latitude,longitude);
+            main.setMarker(latitude,longitude,name,date,tweetHandler.translateHappiness(funMsg),id);
+            places.put(latlng, new mPlace(name,id,date,funMsg,latitude,longitude));
         }
 
     }
@@ -210,10 +217,19 @@ public class Controller {
 
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
-            createPlace(place);
+            String id = place.getId();
+            String date = newDate();
+            double latitude = place.getLatitude();
+            double longitude = place.getLongitude();
             String placename = place.getName();
-            main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun),place.getId());
-            tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
+            String funMsg = fun + placename + "!";
+            place.setDate(date);
+            place.setText(funMsg);
+            createPlace(place);
+
+            main.setMarker(latitude,longitude,placename,date,tweetHandler.translateHappiness(fun),id);
+            tweetHandler.tweet(funMsg, place.getLatitude(), place.getLongitude(), place.getId());
+
         }
         dataFrag.placeFragShowing(false);
         placeFrag.dismiss();
@@ -316,9 +332,12 @@ public class Controller {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        retrievePlaces((Map<String,Object>) dataSnapshot.getValue());
+                        if (dataSnapshot.getValue()!=null){
+                            retrievePlaces((Map<String,Object>) dataSnapshot.getValue());
+                        }
+
                         //dataFrag.setTweetsMap(places);
-                        twitterActivity.getData();
+                        //twitterActivity.getData();
                     }
 
                     @Override

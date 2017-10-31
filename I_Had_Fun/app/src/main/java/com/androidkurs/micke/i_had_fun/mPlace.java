@@ -21,6 +21,15 @@ public class mPlace {
     private double Latitude = 0.0;
     private double Longitude = 0.0;
 
+    public mPlace(String name, String id, String date, String funMsg, double latitude, double longitude) {
+        this.name = name;
+        this.id = id;
+        this.date = date;
+        this.text = funMsg;
+        this.Latitude = latitude;
+        this.Longitude = longitude;
+    }
+
     public String getMsg() {
         return msg;
     }
@@ -99,5 +108,11 @@ public class mPlace {
         return text;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
 
+    public void setText(String text) {
+        this.text = text;
+    }
 }

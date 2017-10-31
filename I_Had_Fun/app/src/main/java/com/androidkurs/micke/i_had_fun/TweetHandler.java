@@ -147,12 +147,10 @@ public class TweetHandler {
                     if (text.contains("&amp")){
                         text = text.replace("&amp;","&");
                     }
-                    mPlace = (mPlace) main.getController().getPlaces().get(new LatLng(latitude,longitude));
+                    //mPlace = (mPlace) main.getController().getPlaces().get(new LatLng(latitude,longitude));
 
                     //twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
 
-
-                    main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
                 }
                 else{
                     //Fetched Message isnt from this application!
