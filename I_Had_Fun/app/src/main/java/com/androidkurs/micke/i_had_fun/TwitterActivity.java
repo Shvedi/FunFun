@@ -1,6 +1,7 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
@@ -57,7 +58,6 @@ public class TwitterActivity {
                 controller.getDialogFrag().onDestroyView();
                 fetchSession();
                 Toast.makeText(main,"Success",Toast.LENGTH_SHORT).show();
-
             }
             @Override
             public void failure(TwitterException exception) {
@@ -66,6 +66,7 @@ public class TwitterActivity {
 
             }
         };
+
         tAuthorClient.authorize(main,cb);
         main.twitterOnActivity(tAuthorClient);
         main.setTwitterActivity(this);

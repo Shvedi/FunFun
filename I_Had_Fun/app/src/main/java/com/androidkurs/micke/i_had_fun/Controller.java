@@ -104,8 +104,8 @@ public class Controller {
             this.dialogFrag = new DialogFragment();
             dialogFrag.setController(this);
             main.setDialogFrag(dialogFrag);
-            showDialogFrag();
         }
+        showDialogFrag();
     }
 
     private void showDialogFrag(){
@@ -237,7 +237,6 @@ public class Controller {
     public void markerInfoClicked(Marker marker) {
         GetPhotosAsync getPhoto = new GetPhotosAsync(this,geoClient,placeDetectionClient,dataFrag.getFromTweetsMap(marker.getSnippet()));
         getPhoto.fetchPlacePhoto();
-        
     }
 
     public void PhotoFetched(mPlace place) {
