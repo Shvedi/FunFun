@@ -151,15 +151,20 @@ public class TweetHandler {
 
                     //twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
 
+
                     main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
                 }
                 else{
                     //Fetched Message isnt from this application!
                 }
                 /*
+
                 * Dangerous method down below Deletes all tweets!
                 //twitterActivity.getTweetHandler().DestroyTweet(Long.parseLong(tweetID));
+
                 */
+
+
             }
 
 

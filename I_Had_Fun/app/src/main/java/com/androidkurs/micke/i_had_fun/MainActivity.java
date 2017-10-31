@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -89,10 +90,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
 
         permissions();
-        initController();
+
         initDrawer();
         initComponents();
         initListeners();
+        initController();
         myLoc = new MyLocation(this);
 
 
@@ -303,12 +305,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (view.getId()){
                 case R.id.nav_logout:
                     twitterActivity.logOut();
+
                     controller.resetDialog();
                     drawerLayout.closeDrawers();
                     mMap.clear();
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        if(isFinishing()){
+            removeFragment(controller.getDataFrag());
+        }
+
+        super.onPause();
+    }
+
+    public void removeFragment(Fragment dataFrag){
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(dataFrag);
+        ft.commit();
     }
 
     public void setUserProfile(User user){

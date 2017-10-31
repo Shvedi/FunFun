@@ -50,6 +50,7 @@ public class Controller {
 
     public Controller(MainActivity mainActivity) {
 
+
         this.main = mainActivity;
         initPlaceDetectionClient();
         initDataFrag();
@@ -120,13 +121,14 @@ public class Controller {
 
     public void onRestoreInstatnce() {
         Log.d("CONTROLLER","ONRESTORE");
-        //initDataFrag();
-        //initFragments();
+
+        initDataFrag();
+        initFragments();
         if(dataFrag.getplaceFragShowing()){
             Log.d("CONTROLLER","PLACEFRAG SHOWING");
             main.fabVisible(false);
             main.enableFab(false);
-            placeFrag.show(main.getFragmentManager(),"Choose Loacation");
+            placeFrag.show(main.getFragmentManager(),"Choose Location");
         }
     }
 
@@ -203,7 +205,7 @@ public class Controller {
         Log.d("CONTROLLER","PlaceListSize: "+placeList.size());
         main.fabVisible(false);
 
-        placeFrag.show(main.getFragmentManager(),"Choose Loacation");
+        placeFrag.show(main.getFragmentManager(),"Choose Location");
     }
 
     public void tweetBtnPressed(mPlace place) {
