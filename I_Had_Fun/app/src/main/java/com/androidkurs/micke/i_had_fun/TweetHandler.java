@@ -150,6 +150,7 @@ public class TweetHandler {
 
 
                     twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
+
                     main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
 
                 }

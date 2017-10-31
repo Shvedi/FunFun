@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void initPosition(double latitude, double longitude) {
         LatLng myLocation = new LatLng(latitude,longitude);
         if(mMap!= null){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         }
 
     }

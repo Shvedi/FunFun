@@ -41,8 +41,8 @@ public class MyLocation implements LocationListener {
 
             if(loc!=null) {
                 main.initPosition(loc.getLatitude(), loc.getLongitude());
-                Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
-                locM.requestLocationUpdates(bestProvider,5000,0,this);
+                //Toast.makeText(main,"Location via " + bestProvider, Toast.LENGTH_SHORT).show();
+                locM.requestLocationUpdates(bestProvider,30000,0,this);
             }
             else{
                 switch (bestProvider) {
@@ -51,7 +51,7 @@ public class MyLocation implements LocationListener {
                         loc = locM.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if(loc!=null){
                             main.initPosition(loc.getLatitude(),loc.getLongitude());
-                            locM.requestLocationUpdates("network",5000,0,this);
+                            locM.requestLocationUpdates("network",30000,0,this);
                         }
                         else{
                             Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();
@@ -62,7 +62,7 @@ public class MyLocation implements LocationListener {
                         loc = locM.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         if(loc!=null){
                             main.initPosition(loc.getLatitude(),loc.getLongitude());
-                            locM.requestLocationUpdates("gps",5000,0,this);
+                            locM.requestLocationUpdates("gps",30000,0,this);
                         }
                         else{
                             Toast.makeText(main, "network and gps location is null", Toast.LENGTH_SHORT).show();

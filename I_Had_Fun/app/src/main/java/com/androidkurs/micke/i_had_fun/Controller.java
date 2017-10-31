@@ -74,6 +74,7 @@ public class Controller {
         getLocationPermission();
         initTwitter();
         initFragments();
+
     }
 
     private void retreivePlaces(Map<String, Object> object) {
@@ -138,7 +139,7 @@ public class Controller {
     public void onRestoreInstatnce() {
         Log.d("CONTROLLER","ONRESTORE");
         initDataFrag();
-        initFragments();
+        //initFragments();
         if(dataFrag.getplaceFragShowing()){
             Log.d("CONTROLLER","PLACEFRAG SHOWING");
             main.fabVisible(false);
