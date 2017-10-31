@@ -20,14 +20,16 @@ public class mPlace {
     private LatLng latLong;
     private double Latitude = 0.0;
     private double Longitude = 0.0;
+    private String key;
 
-    public mPlace(String name, String id, String date, String funMsg, double latitude, double longitude) {
+    public mPlace(String name, String id, String date, String funMsg, double latitude, double longitude, String key) {
         this.name = name;
         this.id = id;
         this.date = date;
         this.text = funMsg;
         this.Latitude = latitude;
         this.Longitude = longitude;
+        this.key = key;
     }
 
     public String getMsg() {
@@ -114,5 +116,9 @@ public class mPlace {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

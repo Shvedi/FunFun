@@ -10,7 +10,6 @@ import android.util.Log;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +43,7 @@ public class Controller {
     private int happy;
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseInstance;
-    private HashMap<LatLng,mPlace> places;
+    private HashMap<String, mPlace> places;
     private String id;
 
 
@@ -83,7 +82,8 @@ public class Controller {
 
             latlng = new LatLng(latitude,longitude);
             main.setMarker(latitude,longitude,name,date,tweetHandler.translateHappiness(funMsg),id);
-            places.put(latlng, new mPlace(name,id,date,funMsg,latitude,longitude));
+            places.put(id, new mPlace(name,id,date,funMsg,latitude,longitude,entry.getKey()));
+            dataFrag.addToPlaceMap(id, new mPlace(name,id,date,funMsg,latitude,longitude,entry.getKey()));
         }
 
     }
@@ -311,15 +311,23 @@ public class Controller {
 
     private void createPlace(mPlace mPlace) {
 
+
+        if (getDataFrag().getPlaceMap().containsKey(mPlace.getId())) {
+            mPlace place = dataFrag.getPlaceMap().get(mPlace.getId());
+            mDatabaseReference.child(twitterActivity.getScreenName()).child(place.getKey()).setValue(mPlace);;
+        }
+        else{
             if (TextUtils.isEmpty(id)) {
                 id = mDatabaseReference.push().getKey();
             }
             mDatabaseReference.child(twitterActivity.getScreenName()).child(id).setValue(mPlace);
             id = "";
+        }
+
     }
 
 
-    public HashMap<LatLng, mPlace> getPlaces() {
+    public HashMap<String, mPlace> getPlaces() {
         return places;
     }
 
@@ -334,6 +342,7 @@ public class Controller {
                         //Get map of users in datasnapshot
                         if (dataSnapshot.getValue()!=null){
                             retrievePlaces((Map<String,Object>) dataSnapshot.getValue());
+
                         }
 
                         //dataFrag.setTweetsMap(places);

@@ -19,12 +19,13 @@ import java.util.HashMap;
 
 public class DataFragment extends Fragment {
     private ArrayList<mPlace> placeList = new ArrayList<>();
-    private HashMap<String, Bitmap> placeMap = new HashMap<>();
     private boolean locationPermissionGranted=false;
     private boolean placeFragShowing = false;
     private HashMap<String, mPlace> tweetsMap = new HashMap<>();
+    private HashMap<String, mPlace> placeMap = new HashMap<>();
     private mPlace placeToDisplay;
     private int[] happyArr = {0,0,0,0};
+
 
     public void addToTweetsMap(String key, mPlace value){
         tweetsMap.put(key,value);
@@ -32,6 +33,9 @@ public class DataFragment extends Fragment {
 
     public mPlace getFromTweetsMap(String key){
         return tweetsMap.get(key);
+    }
+    public HashMap<String,mPlace> getPlaceMap(){
+        return placeMap;
     }
 
     public HashMap<String, mPlace> getTweetsMap() {
@@ -103,7 +107,11 @@ public class DataFragment extends Fragment {
     public void setHappyArr(int[] happyArr) {
         this.happyArr = happyArr;
     }
-    public int[] getHappyArr(){
+    public int[] getHappyArr() {
         return this.happyArr;
+    }
+    public void addToPlaceMap(String id, mPlace mPlace) {
+        placeMap.put(id,mPlace);
+
     }
 }
