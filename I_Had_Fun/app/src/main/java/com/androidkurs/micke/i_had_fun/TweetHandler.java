@@ -47,7 +47,7 @@ public class TweetHandler {
         this.main = main;
     }
 
-    public void tweet(String msg, double latitude, double longitude, String placeID) {
+    public void tweet(String msg, final String date, final BitmapDescriptor bitmapDescriptor, final double latitude, final double longitude, final String placeID, final mPlace place) {
         Log.d("TWEETHANDLER ","TWEET PLACEID: " +placeID);
         TwitterSession session = twitterActivity.getSession();
         StatusesService statusesService = TwitterCore.getInstance().getApiClient(session).getStatusesService();
@@ -57,6 +57,8 @@ public class TweetHandler {
             @Override
             public void success(Result<Tweet> result) {
                 Toast.makeText(twitterActivity.main,"Tweet SUCCESSFUL",Toast.LENGTH_SHORT).show();
+                controller.createPlace(place);
+                main.setMarker(place.getLatitude(),place.getLongitude(),place.getName(),place.getDate(),bitmapDescriptor,place.getId());
             }
 
             @Override

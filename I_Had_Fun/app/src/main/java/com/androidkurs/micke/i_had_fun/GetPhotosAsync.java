@@ -62,8 +62,6 @@ public class GetPhotosAsync  {
                     PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
                     photoMetadataBuffer.release();
 
-
-
                 // Get the attribution text.
 
                 // Get a full-size bitmap for the photo.

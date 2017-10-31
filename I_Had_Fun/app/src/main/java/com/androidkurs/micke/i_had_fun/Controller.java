@@ -225,10 +225,8 @@ public class Controller {
             String funMsg = fun + placename + "!";
             place.setDate(date);
             place.setText(funMsg);
-            createPlace(place);
 
-            main.setMarker(latitude,longitude,placename,date,tweetHandler.translateHappiness(fun),id);
-            tweetHandler.tweet(funMsg, place.getLatitude(), place.getLongitude(), place.getId());
+            tweetHandler.tweet(funMsg,date,tweetHandler.translateHappiness(fun), latitude, longitude, id,place);
 
         }
         dataFrag.placeFragShowing(false);
@@ -309,7 +307,7 @@ public class Controller {
         return dialogFrag;
     }
 
-    private void createPlace(mPlace mPlace) {
+    public void createPlace(mPlace mPlace) {
 
 
         if (getDataFrag().getPlaceMap().containsKey(mPlace.getId())) {
@@ -344,7 +342,6 @@ public class Controller {
                             retrievePlaces((Map<String,Object>) dataSnapshot.getValue());
 
                         }
-
                         //dataFrag.setTweetsMap(places);
                         //twitterActivity.getData();
                     }
