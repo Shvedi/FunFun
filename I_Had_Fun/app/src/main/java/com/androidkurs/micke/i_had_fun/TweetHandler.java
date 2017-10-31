@@ -115,6 +115,7 @@ public class TweetHandler {
         String tweetID = "";
         Double latitude = null;
         Double longitude = null;
+        mPlace mPlace;
         try {
             JSONArray arr = new JSONArray(response);
             JSONArray coordArr;
@@ -142,8 +143,13 @@ public class TweetHandler {
                     id = jsonObject.getString("id");
 
                     tweets.put(jsonObject.getString("id"),new mPlace(text,date,latitude,longitude));*/
+                    if (text.contains("&amp")){
+                        text = text.replace("&amp;","&");
+                    }
+                    mPlace = (mPlace) main.getController().getPlaces().get(text.substring(0,text.length()-1));
 
-                    twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,tweetID);
+
+                    twitterActivity.main.setMarker(latitude,longitude,text, date, bitDesc,mPlace.getId());
                     main.getController().getDataFrag().addToTweetsMap(tweetID,new mPlace(text,date,latitude,longitude,placeID,text1));
 
                 }

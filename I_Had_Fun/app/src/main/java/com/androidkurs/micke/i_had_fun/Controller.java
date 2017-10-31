@@ -1,22 +1,29 @@
 package com.androidkurs.micke.i_had_fun;
 
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hello on 2017-10-20.
@@ -34,15 +41,60 @@ public class Controller {
     private String fun;
     private String[] months = {"Jan","Feb","Mar","Apr","Maj","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
     private int happy;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseDatabase mFirebaseInstance;
+    private HashMap<String,mPlace> places;
+    private String id;
+
 
 
     public Controller(MainActivity mainActivity) {
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseInstance.getReference().child("places");
+
+        mDatabaseReference.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Get map of users in datasnapshot
+                        retreivePlaces((Map<String,Object>) dataSnapshot.getValue());
+                        dataFrag.setTweetsMap(places);
+                        twitterActivity.getData();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
         this.main = mainActivity;
         initPlaceDetectionClient();
         initDataFrag();
         getLocationPermission();
         initTwitter();
         initFragments();
+    }
+
+    private void retreivePlaces(Map<String, Object> object) {
+        places = new HashMap<>();
+        String name;
+        String id;
+        double latitude;
+        double longitude;
+        LatLng latlng;
+        for (Map.Entry<String, Object> entry : object.entrySet()){
+
+            Map singelPlace = (Map) entry.getValue();
+            name = singelPlace.get("name").toString();
+            id = singelPlace.get("id").toString();
+            latitude = Double.parseDouble(singelPlace.get("latitude").toString());
+            longitude = Double.parseDouble(singelPlace.get("longitude").toString());
+            latlng = new LatLng(latitude,longitude);
+
+            places.put(name, new mPlace(name,id,latlng));
+        }
+
     }
 
     private void initTwitter() {
@@ -173,6 +225,7 @@ public class Controller {
 
     public void tweetBtnPressed(mPlace place) {
         if(!(place == null)) {
+            createPlace(place);
             String placename = place.getName();
             main.setMarker(place.getLatitude(),place.getLongitude(),placename,newDate() , tweetHandler.translateHappiness(fun),place.getId());
             tweetHandler.tweet(fun + placename + "!", place.getLatitude(), place.getLongitude(), place.getId());
@@ -253,5 +306,20 @@ public class Controller {
 
     public DialogFragment getDialogFrag() {
         return dialogFrag;
+    }
+
+    private void createPlace(mPlace mPlace) {
+        if (!(places.containsKey(mPlace.getName()))) {
+            if (TextUtils.isEmpty(id)) {
+                id = mDatabaseReference.push().getKey();
+            }
+            mDatabaseReference.child(id).setValue(mPlace);
+            id = "";
+        }
+    }
+
+
+    public HashMap<String, mPlace> getPlaces() {
+        return places;
     }
 }

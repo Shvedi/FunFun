@@ -40,8 +40,6 @@ public class GetPhotosAsync  {
         this.placeId = place.getId();
         this.controller = controller;
 
-
-
     }
 
 

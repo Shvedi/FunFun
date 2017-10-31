@@ -27,8 +27,8 @@ public class AsyncTaskGetTimeLine extends AsyncTask<Void, Void, Void> {
     String returnEntry;
     public boolean finished;
 
-    private String consumerKey = "PpHjVX0LbKaJ4ztrYxTuO2R6y";
-    private String consumerSecret = "6cQemVy1Kyk8Uswh0jLY80xDyiswm30MgzoHV5o8RnMBxPS7ZE";
+    private String consumerKey = "Secret";
+    private String consumerSecret = "Secret";
     private MainActivity main;
     private String urlGet,bearerToken;
 
