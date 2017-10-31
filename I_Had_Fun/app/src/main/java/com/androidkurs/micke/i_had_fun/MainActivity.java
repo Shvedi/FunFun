@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.clear();
         for (HashMap.Entry<String, mPlace> entry : mPlace.entrySet()) {
             LatLng myLocation = new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(myLocation).title(entry.getValue().getName() + "\n" + entry.getValue().getDate()).icon(twitterActivity.getTweetHandler().translateHappiness(entry.getValue().getText())).snippet(entry.getValue().getId()));
+            mMap.addMarker(new MarkerOptions().position(myLocation).title(entry.getValue().getName() + "\n" + entry.getValue().getDate()).icon(twitterActivity.getTweetHandler().translateHappiness(entry.getValue().getText(),false)).snippet(entry.getValue().getId()));
         }
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {

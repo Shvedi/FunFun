@@ -84,7 +84,7 @@ public class Controller {
             longitude = Double.parseDouble(singelPlace.get("longitude").toString());
 
             latlng = new LatLng(latitude,longitude);
-            main.setMarker(latitude,longitude,name,date,tweetHandler.translateHappiness(funMsg),id);
+            main.setMarker(latitude,longitude,name,date,tweetHandler.translateHappiness(funMsg,true),id);
             places.put(id, new mPlace(name,id,date,funMsg,latitude,longitude,entry.getKey()));
             dataFrag.addToPlaceMap(id, new mPlace(name,id,date,funMsg,latitude,longitude,entry.getKey()));
         }
@@ -231,7 +231,7 @@ public class Controller {
             if (dataFrag.getPlaceMap().containsKey(id)){
                 twitterActivity.getTweetHandler().DestroyTweet(tweetHandler.getTwitterId(placename));
             }
-            tweetHandler.tweet(funMsg,date,tweetHandler.translateHappiness(fun), latitude, longitude, id,place);
+            tweetHandler.tweet(funMsg,date,tweetHandler.translateHappiness(fun,true), latitude, longitude, id,place);
 
         }
         dataFrag.placeFragShowing(false);

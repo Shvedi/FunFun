@@ -132,7 +132,7 @@ public class TweetHandler {
                 if (jsonObject.getString("source").contains("placeholder.com")){
                     //latitude = Double.parseDouble(obj.getString("coordinates"));
                     text1 = jsonObject.getString("text");
-                    bitDesc = translateHappiness(text1);
+                    bitDesc = translateHappiness(text1,false);
                     text = text1.substring(text1.indexOf("at")+3 ,text1.length()-1);
                     date = jsonObject.getString("created_at");
                     date = date.substring(8,10)+"-"+ date.substring(4,7) + "-" + date.substring(date.length()-4,date.length());
@@ -176,21 +176,29 @@ public class TweetHandler {
         }
     }
 
-    public BitmapDescriptor translateHappiness(String text) {
+    public BitmapDescriptor translateHappiness(String text,boolean translate) {
         Log.d("TWEETHANDLER","translating");
         BitmapDescriptor bit;
         if (text.contains("had fun")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker1);
-            happyArr[0] += 1;
+            if (translate) {
+                happyArr[0] += 1;
+            }
         } else if (text.contains("very fun")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker2);
-            happyArr[1] += 1;
+            if (translate) {
+                happyArr[1] += 1;
+            }
         } else if (text.contains("blast")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker3);
-            happyArr[2] += 1;
+            if (translate) {
+                happyArr[2] += 1;
+            }
         } else if (text.contains("amazing")) {
             bit = BitmapDescriptorFactory.fromResource(R.drawable.happymarker4);
-            happyArr[3] += 1;
+            if (translate) {
+                happyArr[3] += 1;
+            }
         } else {
             return null;
         }
