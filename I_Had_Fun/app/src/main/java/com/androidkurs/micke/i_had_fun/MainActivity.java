@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("ONACTIVITY","SENDING RESULT");
         // Pass the activity result to the login button.
         try{
             tac.onActivityResult(requestCode, resultCode, data);

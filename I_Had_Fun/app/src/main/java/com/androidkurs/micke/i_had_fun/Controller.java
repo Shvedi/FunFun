@@ -49,7 +49,7 @@ public class Controller {
 
 
     public Controller(MainActivity mainActivity) {
-        mFirebaseInstance = FirebaseDatabase.getInstance();
+       mFirebaseInstance = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseInstance.getReference().child("places");
 
         mDatabaseReference.addListenerForSingleValueEvent(
@@ -138,7 +138,7 @@ public class Controller {
 
     public void onRestoreInstatnce() {
         Log.d("CONTROLLER","ONRESTORE");
-        initDataFrag();
+        //initDataFrag();
         //initFragments();
         if(dataFrag.getplaceFragShowing()){
             Log.d("CONTROLLER","PLACEFRAG SHOWING");

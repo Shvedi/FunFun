@@ -3,7 +3,9 @@ package com.androidkurs.micke.i_had_fun;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +18,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DialogFragment extends android.support.v4.app.DialogFragment {
+public class DialogFragment extends android.support.v4.app.DialogFragment{
     private EditText Loginedit;
     private String logintry;
     private TwitterLoginButton twitterbtn;
@@ -41,11 +43,12 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     }
 
     public void addListenerOnButton(View view) {
+
         loginbtn = (Button) view.findViewById(R.id.loginbutton);
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.startLogin();
+                    controller.startLogin();
             }
         });
     //    twitterbtn = (TwitterLoginButton) view.findViewById(R.id.twitterbutton);
@@ -70,6 +73,7 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     public void setController(Controller controller){
         this.controller = controller;
     }
+
 }
 
 

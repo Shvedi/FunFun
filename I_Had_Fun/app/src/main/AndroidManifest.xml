@@ -42,6 +42,7 @@
 
         <activity
             android:name=".SplashActivty"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
@@ -52,7 +53,8 @@
         </activity>
 
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            >
         </activity>
 
     </application>

@@ -66,7 +66,7 @@ public class TwitterActivity {
 
             }
         };
-
+        Log.d("AUTH","Authorizing");
         tAuthorClient.authorize(main,cb);
         main.twitterOnActivity(tAuthorClient);
         main.setTwitterActivity(this);
